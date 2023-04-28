@@ -1,0 +1,68 @@
+---
+name: toursim
+description: A new Flutter project.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  flutter_svg: ^2.0.5
+  animated_splash_screen: ^1.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+  assets:
+  - assets/images/
+  - assets/images/splash.svg
+  - assets/images/splash_logo.png
+  - assets/images/undraw_female_avatar_efig.svg
+  - assets/images/splash1.jpg
+  - assets/images/splash2.jpg
+  - assets/images/loading.gif
+  - assets/page-1/images/home-icon.png
+  - assets/page-1/images/back.png
+  - assets/page-1/images/icon-pencil.png
+  - assets/page-1/images/icon-question-mark.png
+  - assets/page-1/images/icon-mail.png
+  - assets/page-1/images/icon-lock.png
+  - assets/page-1/images/icon-lock-ThD.png
+  - assets/page-1/images/icon-lock-A7m.png
+  - assets/page-1/images/icon-mail-D1V.png
+  - assets/page-1/images/icon-lock-kjM.png
+  - assets/page-1/images/icon-pencil-d8o.png
+  - assets/page-1/images/back-AXm.png
+  - assets/page-1/images/home-icon-3Fy.png
+  - assets/page-1/images/icon-phone.png
+  - assets/page-1/images/home-icon-H6K.png
+  - assets/page-1/images/home-icon-3cX.png
+  - assets/page-1/images/back-rps.png
+  - assets/page-1/images/home-icon-YBu.png
+  - assets/page-1/images/back-iR1.png
+  - assets/page-1/images/back-QKd.png
+  - assets/page-1/images/home-icon-qv3.png
+  - assets/page-1/images/pngegg-1.png
+  - assets/page-1/images/icon-phone-9dV.png
+  - assets/page-1/images/icon-world.png
+  - assets/page-1/images/whatsapp-image-2023-04-27-at-2214-1-bg.png
+  - assets/page-1/images/pngegg-2.png
+  - assets/page-1/images/pngegg-2-PeB.png
+  - assets/page-1/images/pngegg-2-d2K.png
+  - assets/page-1/images/whatsapp-image-2023-04-27-at-2214-1-bg-jB1.png
+  - assets/page-1/images/pngwing.png
+  - assets/page-1/images/whatsapp-image-2023-04-27-at-2214-1.png
+  - assets/page-1/images/icon-mail-xbD.png
+  - assets/page-1/images/pngegg-1-tQK.png
+  - assets/page-1/images/pngegg-1-bcP.png
+  - assets/page-1/images/icon-lock-VUf.png
+  - assets/page-1/images/icon-world-6hy.png
+  - assets/page-1/images/whatsapp-image-2023-04-27-at-2214-1-bg-9pf.png
+  - assets/page-1/images/image-1-bg.png
+  - assets/page-1/images/back-PpX.png
