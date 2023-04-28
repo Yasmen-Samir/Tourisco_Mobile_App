@@ -33,38 +33,56 @@ class _LoginViewState extends State<LoginView> {
             ),
             //d
             if(login)
-            Container(
-              width: double.infinity,
-              height: 60,
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffffffff)),
-                color: const Color(0xffd5b4a3),
-                borderRadius: BorderRadius.circular(66 * fem),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      login=true;
-                      setState(() {
+              Container(
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xffffffff)),
+                  color: const Color(0xffd5b4a3),
+                  borderRadius: BorderRadius.circular(66 * fem),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        login=true;
+                        setState(() {
 
-                      });
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25))),
-                    ),
-                    child: Container(
-                      width: 200,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffeea284),
-                        borderRadius: BorderRadius.circular(46 * fem),
+                        });
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25))),
                       ),
-                      child: Center(
+                      child: Container(
+                        width: 200,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffeea284),
+                          borderRadius: BorderRadius.circular(46 * fem),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Login',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              height: 1.2125 * ffem / fem,
+                              color: const Color(0xff000000),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'Login',
+                          'Signup',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,
@@ -74,34 +92,16 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Signup',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          height: 1.2125 * ffem / fem,
-                          color: const Color(0xff000000),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      login=false;
-                      setState(() {
+                      onPressed: () {
+                        login=false;
+                        setState(() {
 
-                      });
-                    },
-                  ),
-                ],
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
             if(!login)
               Container(
                 width: double.infinity,
