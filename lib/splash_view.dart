@@ -5,22 +5,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:toursim/home.dart';
 
-import 'assets_manager.dart';
+import 'utils/assets_manager.dart';
 
 
 class SplashView extends StatelessWidget {
 
-  Timer? _timer;
 
-  SplashView({super.key});
+  const SplashView({super.key});
 
-  _startDelay() async {
-    await Future.delayed(Duration(seconds: 5));
-    _timer = Timer(const Duration(seconds: 5), _goNext);
+  _startDelay()  {
+     Future.delayed(const Duration(seconds: 5)).then((value){
+       _goNext();
+    });
+   // _timer = Timer(const Duration(seconds: 5), _goNext);
   }
 
   _goNext() {
-     //      Get.toNamed("/home");
+          Get.offNamed("/authView");
   }
 
 
@@ -29,10 +30,18 @@ class SplashView extends StatelessWidget {
     _startDelay();
     return   Scaffold(
       body: Center(
-        child:Image.asset("assets/images/splash2.jpg",
-          height: double.infinity,
-          width: double.infinity,
-          fit: BoxFit.fill,) ,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Image(
+              image:AssetImage(ImagesManager.logo2) ,
+            ),
+            Image(
+              image:AssetImage(ImagesManager.tourisco) ,
+            ),
+          ],
+        ),
       ),
     );
   }

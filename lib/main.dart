@@ -1,11 +1,14 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/utils/assets_manager.dart';
 import 'package:toursim/home.dart';
 import 'package:toursim/page-1/android-small-5.dart';
 import 'package:toursim/splash_view.dart';
+import 'package:toursim/utils/color_manager.dart';
 
 import 'login_view.dart';
+import 'utils/presntation/forget_password.dart';
 
 void main()  {
 
@@ -16,26 +19,18 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       themeMode: ThemeMode.light,
       theme: ThemeData(
-        primaryColor: Colors.blue
+        primaryColor: ColorsManager.primary,
+        primarySwatch: ColorsManager.primarySwatch,
       ),
       debugShowCheckedModeBanner: false,
-      home: AnimatedSplashScreen(
-          duration: 3000,
-          splash: const FadeInImage(
-            image:AssetImage("assets/images/splash2.jpg",) ,
-            placeholder:AssetImage("assets/images/loading.gif",) ,
-            height: double.infinity,
-            width: double.infinity,
-            fit: BoxFit.fill,
-          ),
-          nextScreen: LoginView(),
-          splashIconSize: double.infinity,
-          splashTransition: SplashTransition.fadeTransition,
-          backgroundColor: Colors.black,
-         ),
+      getPages: [
+        GetPage(name: "/",page: () => const SplashView(),),
+        GetPage(name: "/authView",page: () => const AuthView(),),
+        GetPage(name: "/forgetPassword",page: () => const ForgetPassword(),),
+      ],
     );
   }
 }
