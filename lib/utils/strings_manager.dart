@@ -24,7 +24,7 @@ class AppStrings {
   static const String email = 'email';
   static const String invalidEmail = "invalid_email";
   static const String chooseNationality = "Choose a Nationality";
-  static const String resetPassword = "reset_password";
+  static const String resetPassword = "Reset Password";
   static const String success = "success";
   static const String userNameInvalid = "username_hint_message";
   static const String mobileNumberInvalid =

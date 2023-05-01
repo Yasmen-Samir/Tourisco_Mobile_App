@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:toursim/componats/componants.dart';
 import 'package:toursim/utils/assets_manager.dart';
 import 'package:toursim/utils/color_manager.dart';
 import 'package:toursim/utils/componants/my_button.dart';
 import 'package:toursim/utils/strings_manager.dart';
 import 'package:country_picker/country_picker.dart';
-import 'utils/componants/componants.dart';
+import '../utils/componants/componants.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({Key? key}) : super(key: key);
@@ -29,29 +30,16 @@ class _AuthViewState extends State<AuthView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            ImagesManager.back3,
-          ),
-          fit: BoxFit.fill,
-        ),
+    return myScaffoldBackground(
+      body: SingleChildScrollView(
+      child: Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: login ? _loginWidget(context) : _registerWidget(),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: login ? _loginWidget(context) : _registerWidget(),
-            ),
-          ),
-        ),
-      ),
+    ),
+    ),
     );
   }
 
@@ -186,9 +174,8 @@ class _AuthViewState extends State<AuthView> {
                 myElevatedButton(
                   title: AppStrings.login,
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print("login");
-                    }
+                    Get.offNamed("/homeView");
+
                   },
                 ),
               ],

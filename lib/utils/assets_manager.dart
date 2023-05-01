@@ -8,6 +8,8 @@ class ImagesManager{
   static const String logo1='$imagePath/logo.png';
   static const String logo2='$imagePath/logo2.png';
   static const String tourisco='$imagePath/Tourisco.png';
+  static const String ticket='$imagePath/ticket.svg';
+  static const String ticket1='$imagePath/ticket1.png';
 
 
 
