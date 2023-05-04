@@ -2,21 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
-import 'package:toursim/utils/assets_manager.dart';
+import 'package:toursim/controller/Auth_controller.dart';
+import 'package:toursim/controller/state.dart';
+import 'package:toursim/models/person.dart';
+
 import 'package:toursim/utils/color_manager.dart';
 import 'package:toursim/utils/componants/my_button.dart';
 import 'package:toursim/utils/strings_manager.dart';
-import 'package:country_picker/country_picker.dart';
+import '../controller/constant.dart';
 import '../utils/componants/componants.dart';
 
-class AuthView extends StatefulWidget {
-  const AuthView({Key? key}) : super(key: key);
-
-  @override
-  State<AuthView> createState() => _AuthViewState();
-}
-
-class _AuthViewState extends State<AuthView> {
+class AuthView extends GetWidget<AuthController> {
   bool login = true;
   bool isMale = true;
   final TextEditingController _emailController = TextEditingController();
@@ -28,22 +24,30 @@ class _AuthViewState extends State<AuthView> {
       TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  AuthView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return myScaffoldBackground(
       body: SingleChildScrollView(
-      child: Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: login ? _loginWidget(context) : _registerWidget(),
+        child: Form(
+          key: _formKey,
+          child: GetX<AuthController>(
+              init: AuthController(),
+              builder: (controller) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: controller.loginPage.value
+                      ? _loginWidget(context, controller)
+                      : _registerWidget(context, controller),
+                );
+              }),
+        ),
       ),
-    ),
-    ),
     );
   }
 
-  List<Widget> _loginWidget(context) => [
+  List<Widget> _loginWidget(context, AuthController controller) => [
         Container(
           width: double.infinity,
           height: 50,
@@ -59,8 +63,7 @@ class _AuthViewState extends State<AuthView> {
             children: [
               TextButton(
                 onPressed: () {
-                  login = true;
-                  setState(() {});
+                  controller.changePage(true);
                 },
                 style: ButtonStyle(
                   padding: const MaterialStatePropertyAll(
@@ -103,8 +106,7 @@ class _AuthViewState extends State<AuthView> {
                     ),
                   ),
                   onPressed: () {
-                    login = false;
-                    setState(() {});
+                    controller.changePage(false);
                   },
                 ),
               ),
@@ -140,8 +142,13 @@ class _AuthViewState extends State<AuthView> {
                   keyboardType: TextInputType.visiblePassword,
                   labelText: AppStrings.password.tr,
                   prefix: Icons.password,
-                  isPassword: true,
-                  suffix: Icons.visibility,
+                  isPassword: controller.isPasswordVisible.value,
+                  suffix: controller.isPasswordVisible.value
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  suffixOnPressed: () {
+                    controller.visibility();
+                  },
                   validator: (value) {
                     if (value!.isEmpty) {
                       return AppStrings.passwordInvalid;
@@ -152,10 +159,10 @@ class _AuthViewState extends State<AuthView> {
                 const SizedBox(
                   height: 25,
                 ),
-                 Align(
+                Align(
                   alignment: AlignmentDirectional.centerEnd,
                   child: TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       Get.toNamed("/forgetPassword");
                     },
                     child: const Text(
@@ -175,7 +182,6 @@ class _AuthViewState extends State<AuthView> {
                   title: AppStrings.login,
                   onPressed: () {
                     Get.offNamed("/homeView");
-
                   },
                 ),
               ],
@@ -184,7 +190,7 @@ class _AuthViewState extends State<AuthView> {
         ),
       ];
 
-  List<Widget> _registerWidget() => [
+  List<Widget> _registerWidget(context, AuthController controller) => [
         Container(
           width: double.infinity,
           height: 50,
@@ -215,36 +221,23 @@ class _AuthViewState extends State<AuthView> {
                     ),
                   ),
                   onPressed: () {
-                    login = true;
-                    setState(() {});
+                    controller.changePage(true);
                   },
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  login = false;
-                  setState(() {});
-                },
-                style: ButtonStyle(
-                  padding: const MaterialStatePropertyAll(
-                      EdgeInsetsDirectional.zero),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25))),
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  color: ColorsManager.lightYellow,
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                child: Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: ColorsManager.lightYellow,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
+                child: const Center(
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -294,12 +287,12 @@ class _AuthViewState extends State<AuthView> {
                 keyboardType: TextInputType.phone,
                 hintText: AppStrings.mobileNumber.tr,
                 formatter: [
-                  FilteringTextInputFormatter.digitsOnly,
+                  // FilteringTextInputFormatter.digitsOnly,
                 ],
                 prefix: Icons.phone,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return AppStrings.invalidEmail;
+                    return AppStrings.mobileNumberInvalid;
                   }
                   return null;
                 },
@@ -337,11 +330,10 @@ class _AuthViewState extends State<AuthView> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: DropdownButton(
-                          value: isMale,
+                          value: controller.isMale.value,
                           borderRadius: BorderRadius.circular(30.0),
                           style: Theme.of(context).textTheme.bodyMedium,
-                          dropdownColor:
-                              Theme.of(context).scaffoldBackgroundColor,
+                          dropdownColor: ColorsManager.lightYellow,
                           underline: const SizedBox(),
                           items: [
                             DropdownMenuItem(
@@ -350,7 +342,7 @@ class _AuthViewState extends State<AuthView> {
                                 children: [
                                   Icon(
                                     Icons.male,
-                                    color: isMale
+                                    color: controller.isMale.value
                                         ? ColorsManager.primary
                                         : ColorsManager.gray,
                                   ),
@@ -360,7 +352,7 @@ class _AuthViewState extends State<AuthView> {
                                   Text(
                                     'male',
                                     style: TextStyle(
-                                      color: isMale
+                                      color: controller.isMale.value
                                           ? ColorsManager.primary
                                           : ColorsManager.gray,
                                       fontSize: 18.0,
@@ -369,7 +361,6 @@ class _AuthViewState extends State<AuthView> {
                                   ),
                                 ],
                               ),
-                              onTap: () {},
                             ),
                             DropdownMenuItem(
                               value: false,
@@ -377,7 +368,7 @@ class _AuthViewState extends State<AuthView> {
                                 children: [
                                   Icon(
                                     Icons.female,
-                                    color: isMale
+                                    color: controller.isMale.value
                                         ? ColorsManager.gray
                                         : ColorsManager.primary,
                                   ),
@@ -387,7 +378,7 @@ class _AuthViewState extends State<AuthView> {
                                   Text(
                                     'Female',
                                     style: TextStyle(
-                                      color: isMale
+                                      color: controller.isMale.value
                                           ? ColorsManager.gray
                                           : ColorsManager.primary,
                                       fontSize: 18.0,
@@ -396,10 +387,11 @@ class _AuthViewState extends State<AuthView> {
                                   ),
                                 ],
                               ),
-                              onTap: () {},
                             ),
                           ],
-                          onChanged: (value) {}),
+                          onChanged: (value) {
+                            controller.changeGender(value!);
+                          }),
                     ),
                   ),
                 ],
@@ -424,12 +416,14 @@ class _AuthViewState extends State<AuthView> {
                         itemBuilder: (context, index) => ListTile(
                           tileColor: ColorsManager.lightYellow,
                           title: Text(
-                            nationalities[index],
+                            nationalities.entries.toList()[index].value,
                             textAlign: TextAlign.center,
                             style: const TextStyle(),
                           ),
                           onTap: () {
-                            _nationalityController.text = nationalities[index];
+                            _nationalityController.text =
+                                nationalities.entries.toList()[index].value;
+                            print(_nationalityController.text);
                             Navigator.pop(context);
                           },
                         ),
@@ -457,8 +451,13 @@ class _AuthViewState extends State<AuthView> {
                 keyboardType: TextInputType.visiblePassword,
                 labelText: AppStrings.password.tr,
                 prefix: Icons.password,
-                isPassword: true,
-                suffix: Icons.visibility,
+                isPassword: controller.isPasswordVisible.value,
+                suffix: controller.isPasswordVisible.value
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                suffixOnPressed: () {
+                  controller.visibility();
+                },
                 validator: (value) {
                   if (value!.isEmpty && value.length >= 8) {
                     return AppStrings.passwordInvalid;
@@ -475,10 +474,19 @@ class _AuthViewState extends State<AuthView> {
                 keyboardType: TextInputType.visiblePassword,
                 labelText: AppStrings.confirmPassword.tr,
                 prefix: Icons.password,
-                isPassword: true,
-                suffix: Icons.visibility,
+                isPassword: controller.isConfirmPasswordVisible.value,
+                suffix: controller.isConfirmPasswordVisible.value
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                suffixOnPressed: () {
+                  controller.confirmVisibility();
+                },
                 validator: (value) {
-                  if (_passwordController.text != value) {
+                  if (_confirmPasswordController.text != value) {
+                    return AppStrings.passwordInvalid;
+                  }
+                  if (_passwordController.text !=
+                      _confirmPasswordController.text) {
                     return AppStrings.passwordInvalid;
                   }
                   return null;
@@ -491,136 +499,118 @@ class _AuthViewState extends State<AuthView> {
                 title: AppStrings.signUp,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    String code = nationalities.entries
+                        .where((element) {
+                          return element.value == _nationalityController.text;
+                        })
+                        .toList()[0]
+                        .key;
+
+                    myPerson = Person(
+                      username: _userNameController.text,
+                      email: _emailController.text,
+                      phone: _phoneController.text,
+                      gender: isMale ? "male" : "female",
+                      nationality: code,
+                      password: _passwordController.text,
+                    );
+                    controller.createUser();
                     print("register");
                   }
                 },
               ),
-
             ],
           ),
         ),
       ];
 
-  List<String> nationalities = [
-    'Afghan',
-    'Albanian',
-    'Algerian',
-    'American',
-    'Andorran',
-    'Angolan',
-    'Antiguans',
-    'Argentinean',
-    'Armenian',
-    'Australian',
-    'Austrian',
-    'Azerbaijani',
-    'Bahamian',
-    'Bahraini',
-    'Bangladeshi',
-    'Barbadian',
-    'Barbudans',
-    'Batswana',
-    'Belarusian',
-    'Belgian',
-    'Belizean',
-    'Beninese',
-    'Bhutanese',
-    'Bolivian',
-    'Bosnian',
-    'Brazilian',
-    'British',
-    'Bruneian',
-    'Bulgarian',
-    'Burkinabe',
-    'Burmese',
-    'Burundian',
-    'Cambodian',
-    'Cameroonian',
-    'Canadian',
-    'Cape Verdean',
-    'Central African',
-    'Chadian',
-    'Chilean',
-    'Chinese',
-    'Colombian',
-    'Comoran',
-    'Congolese',
-    'Costa Rican',
-    'Croatian',
-    'Cuban',
-    'Cypriot',
-    'Czech',
-    'Danish',
-    'Djibouti',
-    'Dominican',
-    'Dutch',
-    'East Timorese',
-    'Ecuadorean',
-    'Egyptian',
-    'Emirian',
-    'Equatorial Guinean',
-    'Eritrean',
-    'Estonian',
-    'Ethiopian',
-    'Fijian',
-    'Filipino',
-    'Finnish',
-    'French',
-    'Gabonese',
-    'Gambian',
-    'Georgian',
-    'German',
-    'Ghanaian',
-    'Greek',
-    'Grenadian',
-    'Guatemalan',
-    'Guinea-Bissauan',
-    'Guinean',
-    'Guyanese',
-    'Haitian',
-    'Herzegovinian',
-    'Honduran',
-    'Hungarian',
-    'I-Kiribati',
-    'Icelander',
-    'Indian',
-    'Indonesian',
-    'Iranian',
-    'Iraqi',
-    'Irish',
-    'Israeli',
-    'Italian',
-    'Ivorian',
-    'Jamaican',
-    'Japanese',
-    'Jordanian',
-    'Kazakhstani',
-    'Kenyan',
-    'Kittian and Nevisian',
-    'Kuwaiti',
-    'Kyrgyz',
-    'Laotian',
-    'Latvian',
-    'Lebanese',
-    'Liberian',
-    'Libyan',
-    'Liechtensteiner',
-    'Lithuanian',
-    'Luxembourger',
-    'Macedonian',
-    'Malagasy',
-    'Malawian',
-    'Malaysian',
-    'Maldivan',
-    'Malian',
-    'Maltese',
-    'Marshallese',
-    'Mauritanian',
-    'Mauritian',
-    'Mexican',
-    'Micronesian',
-    'Moldovan',
-    'Monacan',
-    'Mong',
-  ];
+  Map<String, String> nationalities = {
+    "AF": "Afghanistan",
+    "AL": "Albania",
+    "DZ": "Algeria",
+    "US": "United States",
+    "AD": "Andorra",
+    "AO": "Angola",
+    "AG": "Antigua and Barbuda",
+    "AR": "Argentina",
+    "AM": "Armenia",
+    "AU": "Australia",
+    "AT": "Austria",
+    "AZ": "Azerbaijan",
+    "BS": "Bahamas",
+    "BH": "Bahrain",
+    "BD": "Bangladesh",
+    "BB": "Barbados",
+    "BY": "Belarus",
+    "BE": "Belgium",
+    "BZ": "Belize",
+    "BJ": "Benin",
+    "BT": "Bhutan",
+    "BO": "Bolivia",
+    "BA": "Bosnia and Herzegovina",
+    "BR": "Brazil",
+    "GB": "United Kingdom",
+    "BN": "Brunei",
+    "BG": "Bulgaria",
+    "BF": "Burkina Faso",
+    "BI": "Burundi",
+    "KH": "Cambodia",
+    "CM": "Cameroon",
+    "CA": "Canada",
+    "CV": "Cape Verde",
+    "CF": "Central African Republic",
+    "TD": "Chad",
+    "CL": "Chile",
+    "CN": "China",
+    "CO": "Colombia",
+    "KM": "Comoros",
+    "CD": "Congo, Democratic Republic of the",
+    "CG": "Congo, Republic of the",
+    "CR": "Costa Rica",
+    "HR": "Croatia",
+    "CU": "Cuba",
+    "CY": "Cyprus",
+    "CZ": "Czech Republic",
+    "DK": "Denmark",
+    "DJ": "Djibouti",
+    "DM": "Dominica",
+    "DO": "Dominican Republic",
+    "TL": "East Timor",
+    "EC": "Ecuador",
+    "EG": "Egypt",
+    "SV": "El Salvador",
+    "GQ": "Equatorial Guinea",
+    "ER": "Eritrea",
+    "EE": "Estonia",
+    "ET": "Ethiopia",
+    "FJ": "Fiji",
+    "FI": "Finland",
+    "FR": "France",
+    "GA": "Gabon",
+    "GM": "Gambia",
+    "GE": "Georgia",
+    "DE": "Germany",
+    "GH": "Ghana",
+    "GR": "Greece",
+    "GD": "Grenada",
+    "GT": "Guatemala",
+    "GN": "Guinea",
+    "GW": "Guinea-Bissau",
+    "GY": "Guyana",
+    "HT": "Haiti",
+    "HN": "Honduras",
+    "HU": "Hungary",
+    "IS": "Iceland",
+    "IN": "India",
+    "ID": "Indonesia",
+    "IR": "Iran",
+    "IQ": "Iraq",
+    "IE": "Ireland",
+    "IL": "Israel",
+    "IT": "Italy",
+    "CI": "Ivory Coast",
+    "JM": "Jamaica",
+    "JP": "Japan",
+    "JO": "Jordan",
+  };
 }

@@ -10,6 +10,9 @@ class ImagesManager{
   static const String tourisco='$imagePath/Tourisco.png';
   static const String ticket='$imagePath/ticket.svg';
   static const String ticket1='$imagePath/ticket1.png';
+  static const String loading='$imagePath/loading.gif';
+  static const String loading1='$imagePath/loading1.gif';
+  static const String loading2='$imagePath/loading1.gif';
 
 
 

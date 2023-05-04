@@ -33,7 +33,7 @@ class AppStrings {
   static const String alreadyHaveAccount = "already_have_account";
   static const register = "register";
   static const signUp = "Sign Up";
-  static const mobileNumber = "mobile_number_hint";
+  static const mobileNumber = "phone";
   static const phone = "Phone";
   static const profilePicture = "upload_profile_picture";
   static const photoGallery = "photo_from_galley";

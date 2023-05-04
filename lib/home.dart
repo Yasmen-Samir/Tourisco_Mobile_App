@@ -1,64 +1,41 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/controller/home_controller.dart';
+import 'package:toursim/models/gov.dart';
+import 'package:toursim/network/remote/api_url.dart';
+import 'package:toursim/utils/assets_manager.dart';
 import 'package:toursim/utils/color_manager.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends GetWidget<HomeController> {
   HomeView({Key? key}) : super(key: key);
 
-  List<Map<String,dynamic>> banner = [
-    {
-    "name":"Cairo",
-    "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-  },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Cairo",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _getContentWidget());
+    return Scaffold(
+        body: GetBuilder<HomeController>(
+          init: HomeController(),
+        builder: (controller) {
+        return _getContentWidget(controller);
+      }
+    ));
   }
 
-  Widget _getContentWidget() => SingleChildScrollView(
-        child: Column(
+  Widget _getContentWidget(HomeController controller) => SingleChildScrollView(
+        child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 25,),
-            _getBannersWidget(banner),
-            _getStoresWidget(banner),
+            _getBannersWidget(controller.govs),
+            _getStoresWidget(controller.govs),
           ],
         ),
       );
 
 
-  Widget _getBannersWidget(List<Map<String,dynamic>> banners) {
+  Widget _getBannersWidget(List<Gov> banners) {
     return Container(
       decoration: BoxDecoration(
         color: ColorsManager.darkYellow,
@@ -82,10 +59,15 @@ class HomeView extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                banner[index]["image"],
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Image.asset(
+                  ImagesManager.loading2,
+                ),
+                imageUrl:  "${ApiUrl.baseLink}${banners[index].emblem}",
                 fit: BoxFit.cover,
+                height: 110,
               ),
+
             ),
           ),
         )),
@@ -101,7 +83,7 @@ class HomeView extends StatelessWidget {
   }
 
 
-  Widget _getStoresWidget(List<Map<String,dynamic>>  stores) => GridView.count(
+  Widget _getStoresWidget(List<Gov>  stores) => GridView.count(
     crossAxisCount: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
@@ -128,15 +110,19 @@ class HomeView extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  stores[index]["image"],
+                child:
+                CachedNetworkImage(
+                  placeholder: (context, url) => Image.asset(
+                    ImagesManager.loading1,
+                  ),
+                  imageUrl: "${ApiUrl.baseLink}${stores[index].emblem}",
                   fit: BoxFit.cover,
-                  height: 100,
+                  height: 110,
                 ),
               ),
             ),
             const SizedBox(height: 5,),
-            Text(stores[index]["name"],
+            Text(stores[index].name,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),),

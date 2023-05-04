@@ -14,6 +14,9 @@ dependencies:
   animated_splash_screen: ^1.3.0
   country_picker: ^2.0.20
   carousel_slider: ^4.2.1
+  dio: ^5.1.1
+  fluttertoast: ^8.2.1
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +33,5 @@ flutter:
   - assets/images/loading.gif
   - assets/images/ticket.svg
   - assets/images/ticket1.png
+  - assets/images/loading1.gif
+  - assets/images/loading2.gif
