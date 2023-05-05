@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
 import 'package:toursim/network/local/cache_helper.dart';
 
+import '../models/person.dart';
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
 import 'constant.dart';
@@ -14,6 +15,8 @@ class AuthController extends GetxController {
   void createUser() {
     DioHelper.postData(urlPath: ApiUrl.createUser, data: myPerson!.toMaP())
         .then((value) {
+      myId=value.data['id'];
+      CacheHelper.saveData(key: "myId", value: myId);
       Get.offNamed("/homeView");
 
       print(value);
@@ -77,19 +80,6 @@ class AuthController extends GetxController {
     Get.offNamed("/homeView");
   }
 
-
-   Future<dynamic> getUserInfo(String token) async {
-     DioHelper.getData(urlPath: ApiUrl.loginUser,token: token)
-         .then((value) {
-       var v= json.decode(value.data["access"]);
-       print(v);
-     })
-         .catchError((error) {
-       print("error==========$error");
-
-     });
-
-  }
 
   Rx<bool> isPasswordVisible = true.obs;
   void visibility() {

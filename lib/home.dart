@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:toursim/controller/home_controller.dart';
 import 'package:toursim/models/gov.dart';
 import 'package:toursim/network/remote/api_url.dart';
+import 'package:toursim/presntation/drawer.dart';
 import 'package:toursim/utils/assets_manager.dart';
 import 'package:toursim/utils/color_manager.dart';
 
@@ -29,7 +30,7 @@ class HomeView extends GetWidget<HomeController> {
           icon: const Icon(Icons.menu),
         ),
       ),
-      drawer:NavigateDrawer() ,
+      drawer:const DrawerNav() ,
         body: GetBuilder<HomeController>(
           init: HomeController(),
         builder: (controller) {

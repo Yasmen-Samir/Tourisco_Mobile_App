@@ -14,6 +14,7 @@ class ColorsManager{
   static const Color red=Color(0xFFD00D0D);
   static const Color black=Color(0xFF000D0D);
   static const Color fill=Color(0xffFDE686);
+  static const Color deepOrange=Colors.deepOrange;
 
 
   static  MaterialColor primarySwatch= const MaterialColor(0xffed9728,

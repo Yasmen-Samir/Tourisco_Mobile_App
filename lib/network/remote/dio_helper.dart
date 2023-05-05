@@ -27,7 +27,6 @@ class DioHelper {
     return await dio.get(
       '${Uri(path: urlPath)}',
       queryParameters: query,
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
   }
 
