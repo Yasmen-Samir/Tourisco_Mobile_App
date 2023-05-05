@@ -1,8 +1,10 @@
 class Person {
+  late int id;
   late String username;
   late String email;
   late String phone;
   late String nationality;
+  late String image;
   late String gender;
   late String password;
 
@@ -16,12 +18,13 @@ class Person {
   });
 
   Person.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
     username = json["username"];
     email = json["email"];
     phone = json["phone"];
     gender = json["gender"];
-    password = json["password"];
     nationality = json["nationality"];
+    image = json["profile_image"];
   }
 
   Map<String, dynamic> toMaP() {

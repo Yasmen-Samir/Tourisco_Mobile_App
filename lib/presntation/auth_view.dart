@@ -181,7 +181,10 @@ class AuthView extends GetWidget<AuthController> {
                 myElevatedButton(
                   title: AppStrings.login,
                   onPressed: () {
-                    Get.offNamed("/homeView");
+                    controller.loginUser(
+                        email: _emailController.text,
+                        password: _passwordController.text);
+                    //Get.offNamed("/homeView");
                   },
                 ),
               ],

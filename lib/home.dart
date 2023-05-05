@@ -8,17 +8,33 @@ import 'package:toursim/network/remote/api_url.dart';
 import 'package:toursim/utils/assets_manager.dart';
 import 'package:toursim/utils/color_manager.dart';
 
+import 'presntation/drower.dart';
+
 class HomeView extends GetWidget<HomeController> {
   HomeView({Key? key}) : super(key: key);
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: const Text("Home"),
+        leading: IconButton(
+          onPressed:(){
+            scaffoldKey.currentState?.openDrawer();
+          } ,
+          icon: const Icon(Icons.menu),
+        ),
+      ),
+      drawer:NavigateDrawer() ,
         body: GetBuilder<HomeController>(
           init: HomeController(),
         builder: (controller) {
-        return _getContentWidget(controller);
+        return controller.govs.isNotEmpty?_getContentWidget(controller)
+            :const Center(child: CircularProgressIndicator());
       }
     ));
   }
@@ -38,10 +54,10 @@ class HomeView extends GetWidget<HomeController> {
   Widget _getBannersWidget(List<Gov> banners) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorsManager.darkYellow,
+        color: ColorsManager.lightGray,
           borderRadius: BorderRadius.circular(12),
           border:  Border.all(
-            color: ColorsManager.primary,
+            color: ColorsManager.lightGray,
             width: 3,
           ),
         ),
@@ -74,6 +90,7 @@ class HomeView extends GetWidget<HomeController> {
         options: CarouselOptions(
           height: 190,
           autoPlay: true,
+
           enableInfiniteScroll: true,
           enlargeCenterPage: true,
 
@@ -94,7 +111,7 @@ class HomeView extends GetWidget<HomeController> {
     children: List.generate(stores.length, (index) {
       return InkWell(
         onTap: () {
-          Get.toNamed("/govDetails");
+          Get.toNamed("/govDetails",arguments: stores[index].id);
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,

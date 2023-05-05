@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
 import 'package:toursim/models/gov.dart';
+import 'package:toursim/models/person.dart';
 
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
@@ -15,13 +16,23 @@ class HomeController extends GetxController {
   onInit(){
    super.onInit();
    getGov();
+   getUserData();
  }
-  List<Gov> govs  =[];
+
+ List<Gov> govs=[];
   void getGov() {
     DioHelper.getData(urlPath: ApiUrl.governorates)
         .then((value) {
       govs=List.from(value.data.map((e)=>Gov.fromJson(e)));
       print(govs[0].name);
+      update();
+    });
+  }
+
+  void getUserData() {
+    DioHelper.getData(urlPath: ApiUrl.userData(myId!))
+        .then((value) {
+      myPerson=Person.fromJson(value.data);
       update();
     });
   }

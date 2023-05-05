@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
+import 'package:toursim/network/local/cache_helper.dart';
 
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
@@ -34,6 +35,60 @@ class AuthController extends GetxController {
         update();
       }
     });
+  }
+
+  void loginUser({
+  required String email,
+  required String password,
+}) {
+    DioHelper.postData(urlPath: ApiUrl.loginUser,
+        data:{
+        "email":email,
+        "password":password
+    }).then((value) {
+      if(value.statusCode==200){
+        decoder(value.data["access"]);
+        update();
+        print("doneeeeeeeeee");
+      }else{
+        showToast(message: "Invalid Email Or Password", state: ToastState.error);
+      }
+
+    }).catchError((error) {
+      showToast(message: "Error Invalid Email Or Password", state: ToastState.error);
+
+      print("error==========$error");
+    });
+  }
+
+  void decoder(String token){
+
+    List<String> tokenParts = token.split('.');
+    String payload = tokenParts[1];
+
+    String normalizedPayload = base64Url.normalize(payload);
+    String decodedPayload = utf8.decode(base64Url.decode(normalizedPayload));
+
+    Map<String, dynamic> payloadMap = json.decode(decodedPayload);
+
+    myId=payloadMap['user_id'];
+    print(payloadMap['user_id']);
+    CacheHelper.saveData(key: "myId", value: myId);
+    Get.offNamed("/homeView");
+  }
+
+
+   Future<dynamic> getUserInfo(String token) async {
+     DioHelper.getData(urlPath: ApiUrl.loginUser,token: token)
+         .then((value) {
+       var v= json.decode(value.data["access"]);
+       print(v);
+     })
+         .catchError((error) {
+       print("error==========$error");
+
+     });
+
   }
 
   Rx<bool> isPasswordVisible = true.obs;

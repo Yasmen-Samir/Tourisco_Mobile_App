@@ -1,16 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toursim/utils/color_manager.dart';
 import 'package:toursim/utils/strings_manager.dart';
 
-class GovDetails extends StatelessWidget {
-  GovDetails({Key? key}) : super(key: key);
+import '../controller/gov_details_controller.dart';
+import '../network/remote/api_url.dart';
+import '../utils/assets_manager.dart';
 
-  Map<String, dynamic> gov = {
-    "name": "Cairo",
-    "image": "https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    "about": "Located on the banks of the Nile River ,Cairo is Africa\'s largest city, as well as the largest city in the Arab world. In the course of its thousand-year history it has been the capital of the great Egyptian dynasties of the Middle Ages, a British colonial enclave, and a modern industrialized city. ",
-  };
+class GovDetails extends StatelessWidget {
+  late int govId;
+  GovDetails({ Key? key}) : super(key: key);
+
+
   List<Map<String,dynamic>> banner = [
     {
       "name":"Egyptian Musium",
@@ -32,67 +34,77 @@ class GovDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          onPressed: (){
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        backgroundColor: ColorsManager.darkYellow,
-        title: Text(gov["name"],),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: ColorsManager.darkYellow,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-                padding: EdgeInsetsDirectional.all(10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(gov["image"],
-                  height: 120,
-                  width: double.infinity,
-                    fit: BoxFit.fitWidth,
+    govId = Get.arguments as int;
+    return GetBuilder<GovDetailsController>(
+        init: GovDetailsController()..getGovDetails(govId),
+        builder: (controller) {
+        return controller.govs!=null ?Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leading: IconButton(
+              onPressed: (){
+                Get.back();
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            backgroundColor: ColorsManager.darkYellow,
+            title:  Text(controller.govs!.title,),
+            centerTitle: true,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    color: ColorsManager.darkYellow,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
                   ),
+                    padding: const EdgeInsetsDirectional.all(10),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child:CachedNetworkImage(
+                        placeholder: (context, url) => Image.asset(
+                          ImagesManager.loading2,
+                        ),
+                        imageUrl:  "${ApiUrl.baseLink}${controller.govs!.gov.emblem}",
+                        fit: BoxFit.fitWidth,
+                        width: double.infinity,
+                        height: 200,
+                      ),
+                    ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(AppStrings.about.toUpperCase(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                    ),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(controller.govs!.description,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                    ),),
+                ),
+                _buildTitle("CULTURAL TOURISM"),
+                _getStoresWidget(banner),
+                _buildTitle("ENTERTAINMENT TOURISM"),
+                _getStoresWidget(banner),
+                _buildTitle("MEDICAL TOURISM"),
+                _getStoresWidget(single),
+                _buildTitle("ECO TOURISM"),
+                _getStoresWidget(banner),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(AppStrings.about.toUpperCase(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(gov["about"],
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),),
-            ),
-            _buildTitle("CULTURAL TOURISM"),
-            _getStoresWidget(banner),
-            _buildTitle("ENTERTAINMENT TOURISM"),
-            _getStoresWidget(banner),
-            _buildTitle("MEDICAL TOURISM"),
-            _getStoresWidget(single),
-            _buildTitle("ECO TOURISM"),
-            _getStoresWidget(banner),
-          ],
-        ),
-      ),
+          ),
+        ):const Scaffold(body: Center(child: CircularProgressIndicator()));
+      }
     );
   }
   Widget _buildTitle(String title)=>Padding(
