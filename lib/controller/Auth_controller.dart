@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
 import 'package:toursim/network/local/cache_helper.dart';
 
-import '../models/person.dart';
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
 import 'constant.dart';

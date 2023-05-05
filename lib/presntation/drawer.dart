@@ -5,6 +5,7 @@ import 'package:toursim/utils/color_manager.dart';
 
 import '../controller/constant.dart';
 import '../controller/home_controller.dart';
+import '../network/local/cache_helper.dart';
 
 class DrawerNav extends StatelessWidget {
   const DrawerNav({Key? key}) : super(key: key);
@@ -261,10 +262,10 @@ class DrawerNav extends StatelessWidget {
                           child:  Center(
                             child:  ListTile(
                               onTap: (){
-
-                                /*  CacheHelper.removeData(key: "uId").then((value){
-                      navigateAndFinish(context, LoginScreen());
-                  });*/
+                                    myId=null;
+                                  CacheHelper.removeData(key: "uId").then((value){
+                                Get.offNamed("/authView");
+                                 });
 
                               },
                               tileColor: ColorsManager.primary,
