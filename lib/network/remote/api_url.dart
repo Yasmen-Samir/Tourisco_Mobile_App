@@ -5,5 +5,6 @@ class ApiUrl{
   static const String loginUser="token/";
   static const String governorates="governorates/";
   static  String govDetails(int id)=>"en/governorates/$id";
+  static  String getLandMarkForGov(int id)=>"en/governorate_landmarks/$id/";
   static  String userData(int id)=>"users/$id";
 }

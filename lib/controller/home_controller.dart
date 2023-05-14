@@ -26,6 +26,8 @@ class HomeController extends GetxController {
       govs=List.from(value.data.map((e)=>Gov.fromJson(e)));
       print(govs[0].name);
       update();
+    }).catchError((error){
+      print(error);
     });
   }
 

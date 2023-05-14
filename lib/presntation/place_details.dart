@@ -1,19 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:toursim/models/landmark_model.dart';
 import 'package:toursim/utils/assets_manager.dart';
 
+import '../network/remote/api_url.dart';
 import '../utils/color_manager.dart';
 import '../utils/strings_manager.dart';
 
 class PlaceDetails extends StatelessWidget {
   PlaceDetails({Key? key}) : super(key: key);
-  Map<String, dynamic> place = {
-    "name": "EGYPTIAN MUSIUM",
-    "image": "https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    "about":
-        "The Egyptian Museum is the oldest archaeological museum in the Middle East and houses the largest collection of ancient Egyptian antiquities in the world. The museum displays a large collection spanning from the pre-dynastic period to the Greek and Roman periods.",
-  };
+  late LandMarkModel model= Get.arguments ;
   List<Map<String, dynamic>> banner = [
     {
       "name": "Egyptian Musium",
@@ -52,7 +50,7 @@ class PlaceDetails extends StatelessWidget {
         ),
         backgroundColor: ColorsManager.darkYellow,
         title: Text(
-          place["name"],
+          model.landMark.name.replaceAll("_", " "),
         ),
         centerTitle: true,
       ),
@@ -71,8 +69,11 @@ class PlaceDetails extends StatelessWidget {
               padding: const EdgeInsetsDirectional.all(10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                  place["image"],
+                child:CachedNetworkImage(
+                  placeholder: (context, url) => Image.asset(
+                    ImagesManager.loading1,
+                  ),
+                  imageUrl: "${ApiUrl.baseLink}${model.landMark.image}",
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
@@ -92,7 +93,7 @@ class PlaceDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                place["about"],
+                model.description,
                 style: const TextStyle(
                   fontSize: 16.0,
                 ),

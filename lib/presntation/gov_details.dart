@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/models/landmark_model.dart';
 import 'package:toursim/utils/color_manager.dart';
 import 'package:toursim/utils/strings_manager.dart';
 
@@ -36,7 +37,7 @@ class GovDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     govId = Get.arguments as int;
     return GetBuilder<GovDetailsController>(
-        init: GovDetailsController()..getGovDetails(govId),
+        init: GovDetailsController()..getGovDetails(govId)..getLandMarkForGov(govId),
         builder: (controller) {
         return controller.govs!=null ?Scaffold(
           appBar: AppBar(
@@ -93,13 +94,13 @@ class GovDetails extends StatelessWidget {
                     ),),
                 ),
                 _buildTitle("CULTURAL TOURISM"),
-                _getStoresWidget(banner),
+                _buildLandmarkWidget(controller.landmarks),
                 _buildTitle("ENTERTAINMENT TOURISM"),
-                _getStoresWidget(banner),
+                _buildLandmarkWidget(controller.landmarks),
                 _buildTitle("MEDICAL TOURISM"),
-                _getStoresWidget(single),
+                _buildLandmarkWidget(controller.landmarks),
                 _buildTitle("ECO TOURISM"),
-                _getStoresWidget(banner),
+                _buildLandmarkWidget(controller.landmarks),
               ],
             ),
           ),
@@ -127,18 +128,18 @@ class GovDetails extends StatelessWidget {
       ),
     ),
   );
-  Widget _getStoresWidget(List<Map<String,dynamic>>  stores) => GridView.count(
-    crossAxisCount:stores.length==1?1: 2,
+  Widget _buildLandmarkWidget(List<LandMarkModel>  landMarks) => GridView.count(
+    crossAxisCount:landMarks.length==1?1: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
-    childAspectRatio:stores.length==1?2.4:1.2,
+    childAspectRatio:landMarks.length==1?2.4:1.2,
     physics: const ScrollPhysics(),
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 10),
-    children: List.generate(stores.length, (index) {
+    children: List.generate(landMarks.length, (index) {
       return InkWell(
         onTap: () {
-          Get.toNamed("/placeDetails");
+          Get.toNamed("/placeDetails",arguments: landMarks[index]);
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -154,15 +155,18 @@ class GovDetails extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  stores[index]["image"],
+                child:  CachedNetworkImage(
+                  placeholder: (context, url) => Image.asset(
+                    ImagesManager.loading1,
+                  ),
+                  imageUrl: "${ApiUrl.baseLink}${landMarks[index].landMark.image}",
                   fit: BoxFit.cover,
                   height: 100,
                 ),
               ),
             ),
             const SizedBox(height: 5,),
-            Text(stores[index]["name"],
+            Text(landMarks[index].landMark.name.replaceAll("_", " "),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
