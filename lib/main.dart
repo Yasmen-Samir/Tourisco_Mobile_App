@@ -1,13 +1,11 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toursim/network/local/cache_helper.dart';
 import 'package:toursim/network/remote/dio_helper.dart';
 import 'package:toursim/presntation/forget_password.dart';
-import 'package:toursim/utils/assets_manager.dart';
+import 'package:toursim/utils/app_theme.dart';
 import 'package:toursim/home.dart';
 import 'package:toursim/splash_view.dart';
-import 'package:toursim/utils/color_manager.dart';
 
 import 'presntation/gov_details.dart';
 import 'presntation/auth_view.dart';
@@ -25,11 +23,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        primaryColor: ColorsManager.primary,
-        primarySwatch: ColorsManager.primarySwatch,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: Get.isDarkMode?ThemeMode.dark:ThemeMode.light,
       debugShowCheckedModeBanner: false,
       getPages: [
         GetPage(name: "/",page: () => const SplashView(),),

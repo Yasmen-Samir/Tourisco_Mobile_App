@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toursim/controller/home_controller.dart';
 import 'package:toursim/models/gov.dart';
@@ -19,25 +20,26 @@ class HomeView extends GetWidget<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        title: const Text("Home"),
-        leading: IconButton(
-          onPressed:(){
-            scaffoldKey.currentState?.openDrawer();
-          } ,
-          icon: const Icon(Icons.menu),
-        ),
-      ),
-      drawer:const DrawerNav() ,
-        body: GetBuilder<HomeController>(
-          init: HomeController(),
+    return GetBuilder<HomeController>(
+        init: HomeController(),
         builder: (controller) {
-        return controller.govs.isNotEmpty?_getContentWidget(controller)
-            :const Center(child: CircularProgressIndicator());
-      }
-    ));
+        return Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            title: const Text("Home"),
+            leading: IconButton(
+              onPressed:(){
+                scaffoldKey.currentState?.openDrawer();
+              } ,
+              icon: const Icon(Icons.menu),
+            ),
+          ),
+          drawer:const DrawerNav() ,
+            body: controller.govs.isNotEmpty?_getContentWidget(controller)
+                :const Center(child: CircularProgressIndicator()),
+        );
+      },
+    );
   }
 
   Widget _getContentWidget(HomeController controller) => SingleChildScrollView(

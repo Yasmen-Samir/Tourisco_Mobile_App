@@ -1,6 +1,9 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
 import 'package:toursim/models/gov.dart';
@@ -18,6 +21,17 @@ class HomeController extends GetxController {
    getGov();
    getUserData();
  }
+RxBool isDark=false.obs;
+
+ void changeMode(){
+     isDark.value=!isDark.value;
+     update();
+ }
+ void updateSystemOverlayStyle(bool isDark) {
+   FlutterStatusbarcolor.setStatusBarWhiteForeground(isDark);
+   update();
+ }
+
 
  List<Gov> govs=[];
   void getGov() {

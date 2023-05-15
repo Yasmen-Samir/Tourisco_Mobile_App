@@ -41,6 +41,7 @@ class GovDetails extends StatelessWidget {
         builder: (controller) {
         return controller.govs!=null ?Scaffold(
           appBar: AppBar(
+            systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
             elevation: 0,
             leading: IconButton(
               onPressed: (){

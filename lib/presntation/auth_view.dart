@@ -615,4 +615,5 @@ class AuthView extends GetWidget<AuthController> {
   "CI": "Ivorian",
   "JM": "Jordan",
   };
+
 }

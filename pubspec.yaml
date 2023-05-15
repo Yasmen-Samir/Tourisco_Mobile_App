@@ -18,6 +18,7 @@ dependencies:
   fluttertoast: ^8.2.1
   cached_network_image: ^3.2.3
   shared_preferences: ^2.1.0
+  flutter_statusbarcolor_ns: ^0.5.0
 
 dev_dependencies:
   flutter_test:
