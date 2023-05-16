@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toursim/utils/color_manager.dart';
-import 'package:toursim/utils/font_manager.dart';
-import 'package:toursim/utils/strings_manager.dart';
-import 'package:toursim/utils/style_manager.dart';
+import 'package:toursim/core/utils/color_manager.dart';
+import 'package:toursim/core/utils/font_manager.dart';
+import 'package:toursim/core/utils/strings_manager.dart';
+import 'package:toursim/core/utils/style_manager.dart';
 
 
 ThemeData lightTheme = ThemeData(
@@ -16,7 +16,7 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: ColorsManager.white,
+      statusBarColor: ColorsManager.primary,
       statusBarBrightness:  Brightness.light,
       statusBarIconBrightness: Brightness.dark,
     ),

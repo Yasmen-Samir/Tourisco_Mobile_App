@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:toursim/models/landmark_model.dart';
-import 'package:toursim/utils/assets_manager.dart';
-
+import '../core/utils/assets_manager.dart';
+import '../core/utils/color_manager.dart';
 import '../network/remote/api_url.dart';
-import '../utils/color_manager.dart';
-import '../utils/strings_manager.dart';
+import '../core/utils/strings_manager.dart';
 
 class PlaceDetails extends StatelessWidget {
   PlaceDetails({Key? key}) : super(key: key);
@@ -83,7 +81,7 @@ class PlaceDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                AppStrings.about.toUpperCase(),
+                AppStrings.about.tr,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,

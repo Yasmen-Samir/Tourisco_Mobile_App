@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:toursim/controller/constant.dart';
-import 'package:toursim/home.dart';
 import 'package:toursim/network/local/cache_helper.dart';
-import 'package:toursim/utils/color_manager.dart';
 
-import 'utils/assets_manager.dart';
+import '../core/utils/assets_manager.dart';
+import '../core/utils/color_manager.dart';
 
 
 class SplashView extends StatelessWidget {

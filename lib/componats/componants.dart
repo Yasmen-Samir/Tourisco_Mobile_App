@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toursim/core/utils/assets_manager.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
-import '../utils/assets_manager.dart';
 
-Widget myScaffoldBackground({Widget? body})=>Container(
+Widget myScaffoldBackground({
+  Widget? body,
+  PreferredSizeWidget? appBar,
+}
+    )=>Container(
   height: double.infinity,
   width: double.infinity,
   decoration: const BoxDecoration(
@@ -16,6 +21,7 @@ Widget myScaffoldBackground({Widget? body})=>Container(
     ),
   ),
   child: Scaffold(
+    appBar: appBar,
     backgroundColor: Colors.transparent,
     body: body,
   ),
@@ -37,6 +43,7 @@ void showToast({
 
 enum ToastState { success, error, warning }
 
+
 Color chooseToastColor(ToastState state) {
   Color color;
   switch (state) {
@@ -53,3 +60,11 @@ Color chooseToastColor(ToastState state) {
 
   return color;
 }
+Widget condition({
+  required bool condition,
+  required Widget child,
+})=> ConditionalBuilder(
+  condition: condition,
+  builder: (context) => child,
+  fallback: (context) => const Center(child: CircularProgressIndicator()),
+);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toursim/utils/color_manager.dart';
+
+import '../core/utils/color_manager.dart';
 
 class MyFromField extends StatefulWidget {
   late TextEditingController controller;

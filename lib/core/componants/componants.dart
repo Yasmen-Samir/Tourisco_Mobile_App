@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toursim/utils/color_manager.dart';
+import 'package:toursim/core/utils/color_manager.dart';
 
 Widget myFromField(
     {required BuildContext context,

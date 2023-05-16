@@ -3,14 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
 import 'package:toursim/controller/Auth_controller.dart';
-import 'package:toursim/controller/state.dart';
+import 'package:toursim/helper/constants.dart';
 import 'package:toursim/models/person.dart';
-
-import 'package:toursim/utils/color_manager.dart';
-import 'package:toursim/utils/componants/my_button.dart';
-import 'package:toursim/utils/strings_manager.dart';
+import 'package:toursim/core/utils/strings_manager.dart';
 import '../controller/constant.dart';
-import '../utils/componants/componants.dart';
+import '../core/componants/componants.dart';
+import '../core/componants/my_button.dart';
+import '../core/utils/color_manager.dart';
 
 class AuthView extends GetWidget<AuthController> {
   bool login = true;
@@ -28,92 +27,68 @@ class AuthView extends GetWidget<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return myScaffoldBackground(
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: GetX<AuthController>(
-              init: AuthController(),
-              builder: (controller) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: controller.loginPage.value
-                      ? _loginWidget(context, controller)
+    return  GetX<AuthController>(
+        init: AuthController(),
+        builder: (controller) {
+        return myScaffoldBackground(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent
+            ),
+            titleSpacing: 0,
+            toolbarHeight: 80,
+            title: SafeArea(
+              child: Row(
+                children: [
+                  const SizedBox(width: 3,),
+                  CircleAvatar(
+                    radius: 20,
+                    child: TextButton(
+                        onPressed: (){
+                          if(Get.locale==const Locale('ar')) {
+                              language="en";
+                            Get.updateLocale(const Locale('en'));
+                          }else{
+                            language="ar";
+                            Get.updateLocale(const Locale('ar'));
+                          }
+                          print(language);
+                        }, child:  Text(AppStrings.langCode.tr,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: ColorsManager.white,
+                      ),)),
+                  ),
+                  const SizedBox(width: 3,),
+                  selectAuth(context,controller),
+                  const SizedBox(width: 3,),
+                ],
+              ),
+            ),
+          ),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                  child: Column(
+                      children: [
+                        const SizedBox(height: 10,),
+                        controller.loginPage.value
+                            ? _loginWidget(context, controller)
                       : _registerWidget(context, controller),
-                );
-              }),
-        ),
-      ),
+                        const SizedBox(height: 20,),
+
+                      ],
+                    )
+              ),
+            ),
+          ),
+        );
+      }
     );
   }
 
-  List<Widget> _loginWidget(context, AuthController controller) => [
-        Container(
-          width: double.infinity,
-          height: 50,
-          margin: const EdgeInsetsDirectional.fromSTEB(5, 30, 5, 100),
-          padding: const EdgeInsetsDirectional.all(3.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xffffffff)),
-            color: ColorsManager.primary,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  controller.changePage(true);
-                },
-                style: ButtonStyle(
-                  padding: const MaterialStatePropertyAll(
-                      EdgeInsetsDirectional.zero),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25))),
-                ),
-                child: Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: ColorsManager.lightYellow,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Text(
-                      'Signup',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: ColorsManager.black,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    controller.changePage(false);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        Center(
+  Widget _loginWidget(context, AuthController controller) => Center(
           heightFactor: 1.5,
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -128,7 +103,7 @@ class AuthView extends GetWidget<AuthController> {
                   prefix: Icons.email,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return AppStrings.invalidEmail;
+                      return AppStrings.invalidEmail.tr;
                     }
                     return null;
                   },
@@ -151,7 +126,7 @@ class AuthView extends GetWidget<AuthController> {
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return AppStrings.passwordInvalid;
+                      return AppStrings.passwordInvalid.tr;
                     }
                     return null;
                   },
@@ -165,9 +140,9 @@ class AuthView extends GetWidget<AuthController> {
                     onPressed: () {
                       Get.toNamed("/forgetPassword");
                     },
-                    child: const Text(
-                      AppStrings.forgetPassword,
-                      style: TextStyle(
+                    child:  Text(
+                      AppStrings.forgetPassword.tr,
+                      style: const TextStyle(
                         color: ColorsManager.lightYellow,
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -178,77 +153,25 @@ class AuthView extends GetWidget<AuthController> {
                 const SizedBox(
                   height: 50,
                 ),
-                myElevatedButton(
-                  title: AppStrings.login,
-                  onPressed: () {
-                    controller.loginUser(
-                        email: _emailController.text,
-                        password: _passwordController.text);
-                    //Get.offNamed("/homeView");
-                  },
+                condition(
+                  condition: !controller.isLoading.value,
+                  child: myElevatedButton(
+                    title: AppStrings.login.tr,
+                    onPressed: () {
+                      if(_formKey.currentState!.validate()) {
+                        controller.loginUser(
+                          email: _emailController.text,
+                          password: _passwordController.text);
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
           ),
-        ),
-      ];
+        );
 
-  List<Widget> _registerWidget(context, AuthController controller) => [
-        Container(
-          width: double.infinity,
-          height: 50,
-          margin: const EdgeInsetsDirectional.fromSTEB(5, 30, 5, 50),
-          padding: const EdgeInsetsDirectional.all(3.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xffffffff)),
-            color: ColorsManager.primary,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Text(
-                      'login',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff000000),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    controller.changePage(true);
-                  },
-                ),
-              ),
-              Container(
-                width: 200,
-                decoration: BoxDecoration(
-                  color: ColorsManager.lightYellow,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
+  Widget _registerWidget(context, AuthController controller) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: [
@@ -260,7 +183,7 @@ class AuthView extends GetWidget<AuthController> {
                 prefix: Icons.person,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return AppStrings.userNameInvalid;
+                    return AppStrings.userNameInvalid.tr;
                   }
                   return null;
                 },
@@ -276,7 +199,7 @@ class AuthView extends GetWidget<AuthController> {
                 prefix: Icons.email,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return AppStrings.invalidEmail;
+                    return AppStrings.invalidEmail.tr;
                   }
                   return null;
                 },
@@ -295,7 +218,7 @@ class AuthView extends GetWidget<AuthController> {
                 prefix: Icons.phone,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return AppStrings.mobileNumberInvalid;
+                    return AppStrings.mobileNumberInvalid.tr;
                   }
                   return null;
                 },
@@ -315,13 +238,14 @@ class AuthView extends GetWidget<AuthController> {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  const Text(
-                    "Gender ",
-                    style: TextStyle(
+                   Text(
+                    AppStrings.gender.tr,
+                    style: const TextStyle(
                         color: ColorsManager.lightYellow,
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0),
                   ),
+                  const SizedBox(width: 3,),
                   Expanded(
                     child: Container(
                       alignment: Alignment.center,
@@ -353,7 +277,7 @@ class AuthView extends GetWidget<AuthController> {
                                     width: 10.0,
                                   ),
                                   Text(
-                                    'male',
+                                    AppStrings.male.tr,
                                     style: TextStyle(
                                       color: controller.isMale.value
                                           ? ColorsManager.primary
@@ -379,7 +303,7 @@ class AuthView extends GetWidget<AuthController> {
                                     width: 10.0,
                                   ),
                                   Text(
-                                    'Female',
+                                    AppStrings.female.tr,
                                     style: TextStyle(
                                       color: controller.isMale.value
                                           ? ColorsManager.gray
@@ -406,26 +330,30 @@ class AuthView extends GetWidget<AuthController> {
                 context: context,
                 prefix: Icons.nature_people_outlined,
                 controller: _nationalityController,
-                hintText: "Nationality",
+                hintText: AppStrings.nationality.tr,
                 readOnly: true,
                 onTap: () {
+                  Map<String,String> nation=nationalitiesEn;
+                  if(language=="ar"){
+                    nation=nationalitiesAr;
+                  }
                   showDialog(
                     context: context,
                     builder: (context) => Dialog(
                       backgroundColor: ColorsManager.lightYellow,
                       child: ListView.separated(
                         shrinkWrap: true,
-                        itemCount: nationalities.length,
+                        itemCount: nation.length,
                         itemBuilder: (context, index) => ListTile(
                           tileColor: ColorsManager.lightYellow,
                           title: Text(
-                            nationalities.entries.toList()[index].value,
+                            nation.entries.toList()[index].value,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           onTap: () {
                             _nationalityController.text =
-                                nationalities.entries.toList()[index].value;
+                                nation.entries.toList()[index].value;
                             print(_nationalityController.text);
                             Navigator.pop(context);
                           },
@@ -440,7 +368,7 @@ class AuthView extends GetWidget<AuthController> {
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return AppStrings.chooseNationality;
+                    return AppStrings.chooseNationality.tr;
                   }
                   return null;
                 },
@@ -462,8 +390,8 @@ class AuthView extends GetWidget<AuthController> {
                   controller.visibility();
                 },
                 validator: (value) {
-                  if (value!.isEmpty && value.length >= 8) {
-                    return AppStrings.passwordInvalid;
+                  if (value!.isEmpty) {
+                    return AppStrings.passwordInvalid.tr;
                   }
                   return null;
                 },
@@ -486,11 +414,11 @@ class AuthView extends GetWidget<AuthController> {
                 },
                 validator: (value) {
                   if (_confirmPasswordController.text != value) {
-                    return AppStrings.passwordInvalid;
+                    return AppStrings.passwordInvalid.tr;
                   }
                   if (_passwordController.text !=
                       _confirmPasswordController.text) {
-                    return AppStrings.passwordInvalid;
+                    return AppStrings.passwordInvalid.tr;
                   }
                   return null;
                 },
@@ -498,37 +426,190 @@ class AuthView extends GetWidget<AuthController> {
               const SizedBox(
                 height: 50,
               ),
-              myElevatedButton(
-                title: AppStrings.signUp,
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    String code = nationalities.entries
-                        .where((element) {
-                          return element.value == _nationalityController.text;
-                        })
-                        .toList()[0]
-                        .key;
+              condition(
+                condition: !controller.isLoading.value,
+                child: myElevatedButton(
+                  title: AppStrings.signUp.tr,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      String code = (language=="en"?nationalitiesEn:nationalitiesAr).entries
+                          .where((element) {
+                            return element.value == _nationalityController.text;
+                          })
+                          .toList()[0]
+                          .key;
 
-                    myPerson = Person(
-                      username: _userNameController.text,
-                      email: _emailController.text,
-                      phone: _phoneController.text,
-                      gender: isMale ? "male" : "female",
-                      nationality: code,
-                      password: _passwordController.text,
-                    );
-                    controller.createUser();
-                    print("register");
-                  }
-                },
+                      myPerson = Person(
+                        username: _userNameController.text,
+                        email: _emailController.text,
+                        phone: _phoneController.text,
+                        gender: isMale ? "male" : "female",
+                        nationality: code,
+                        password: _passwordController.text,
+                      );
+                      controller.createUser();
+                      print("register");
+                    }
+                  },
+                ),
               ),
             ],
           ),
-        ),
-      ];
+        );
 
-  Map<String, String> nationalities =
-  {
+Widget selectAuth(context,AuthController controller){
+
+  if(controller.loginPage.value){
+    return  Expanded(
+      child: Container(
+        height: 50,
+        padding: const EdgeInsetsDirectional.all(3),
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xffffffff)),
+          color: ColorsManager.primary,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                controller.changePage(true);
+              },
+              style: ButtonStyle(
+                padding: const MaterialStatePropertyAll(
+                    EdgeInsetsDirectional.zero),
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25))),
+              ),
+              child: Container(
+                width: 160,
+                decoration: BoxDecoration(
+                  color: ColorsManager.lightYellow,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child:  Center(
+                  child: Text(
+                    AppStrings.login.tr,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                child: Container(
+                  child:  Text(
+                    AppStrings.signUp.tr,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: ColorsManager.black,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  controller.changePage(false);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+}else{
+    return  Expanded(
+      child: Container(
+        height: 50,
+        padding: const EdgeInsetsDirectional.all(3),
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xffffffff)),
+          color: ColorsManager.primary,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                child: Container(
+                  child:  Text(
+                    AppStrings.login.tr,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff000000),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  controller.changePage(true);
+                },
+              ),
+            ),
+            Container(
+              width: 160,
+              decoration: BoxDecoration(
+                color: ColorsManager.lightYellow,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child:  Center(
+                child: Text(
+                  AppStrings.signUp.tr,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+}
+}
+
+  Decoration itemDecoration(controller)=>BoxDecoration(
+    color:controller.isDark.value
+        ?ColorsManager.dark:ColorsManager.white,// const Color(0xff4d596c),
+    borderRadius: BorderRadius.circular(35.5 ),
+    boxShadow:  [
+      BoxShadow(
+        color: const Color(0xe5363e4c),
+        offset: Offset.fromDirection(6,6),
+        blurRadius: 7.5 ,
+      ),
+      BoxShadow(
+        color: const Color(0xe593632d),
+        offset: Offset.fromDirection(-6,-6),
+        blurRadius: 6 ,
+      ),
+      BoxShadow(
+        color: const Color(0x33363e4c),
+        offset: Offset.fromDirection(6,-6),
+        blurRadius: 6 ,
+      ),
+      BoxShadow(
+        color: ColorsManager.primary,
+        offset: Offset.fromDirection(6,6),
+        blurRadius: 6 ,
+      ),
+    ],
+  );
+
+  Map<String, String> nationalitiesEn = {
   "AF": "Afghan",
   "AL": "Albanian",
   "DZ": "Algerian",
@@ -614,6 +695,73 @@ class AuthView extends GetWidget<AuthController> {
   "IT": "Italian",
   "CI": "Ivorian",
   "JM": "Jordan",
+  };
+  Map<String, String> nationalitiesAr = {
+  "AF": "أفغانستاني",
+  "AL": "ألباني",
+  "DZ": "جزائري",
+  "US": "أمريكي",
+  "AD": "أندوري",
+  "AO": "أنغولي",
+  "AG": "أنتيغوي",
+  "AR": "أرجنتيني",
+  "AM": "أرميني",
+  "AU": "أسترالي",
+  "AT": "نمساوي",
+  "AZ": "أذربيجاني",
+  "BS": "باهامي",
+  "BH": "بحريني",
+  "BD": "بنغلاديشي",
+  "BB": "برباديان",
+  "BY": "بيلاروسي",
+  "BE": "بلجيكي",
+  "BZ": "بليزي",
+  "BJ": "بنيني",
+  "BT": "بوتاني",
+  "BO": "بوليفي",
+  "BA": "بوسني",
+  "BR": "برازيلي",
+  "GB": "بريطاني",
+  "BN": "بروناي",
+  "BG": "بلغاري",
+  "BF": "بوركينابي",
+  "BI": "بوروندي",
+  "KH": "كمبودي",
+  "CM": "كاميروني",
+  "CA": "كندي",
+  "CV": "كابو فيردي",
+  "CF": "أفريقي",
+  "TD": "تشادي",
+  "CL": "تشيلي",
+  "CN": "صيني",
+  "CO": "كولومبي",
+  "KM": "قمري",
+  "CD": "كونغولي",
+  "CG": "كونغولي",
+  "CR": "كوستاريكي",
+  "HR": "كرواتي",
+  "CU": "كوبي",
+  "CY": "قبرصي",
+  "CZ": "تشيكي",
+  "DK": "دنماركي",
+  "DJ": "جيبوتي",
+  "DM": "دومينيكي",
+  "DO": "دومينيكي",
+  "TL": "تيموري",
+  "EC": "إكوادوري",
+  "EG": "مصري",
+  "SV": "سلفادوري",
+  "GQ": "غينيا الاستوائية",
+  "ER": "إريتري",
+  "EE": "إستوني",
+  "ET": "إثيوبي",
+  "FJ": "فيجي",
+  "FI": "فنلندي",
+  "FR": "فرنسي",
+  "GA": "غابوني",
+  "GM": "غامبي",
+  "GE": "جورجي",
+  "DE": "ألاوردن",
   };
 
 }

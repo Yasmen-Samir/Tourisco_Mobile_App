@@ -12,15 +12,16 @@ import 'constant.dart';
 class AuthController extends GetxController {
 
   void createUser() {
+    isLoading.value=true;
     DioHelper.postData(urlPath: ApiUrl.createUser, data: myPerson!.toMaP())
         .then((value) {
       myId=value.data['id'];
       CacheHelper.saveData(key: "myId", value: myId);
+      isLoading.value=false;
       Get.offNamed("/homeView");
-
-      print(value);
     })
         .catchError((error) {
+      isLoading.value=false;
       if (error.response != null) {
         final errorJson = json.decode(error.response.toString());
         final errorMessages = <String>[];
@@ -39,10 +40,13 @@ class AuthController extends GetxController {
     });
   }
 
+ Rx<bool> isLoading=false.obs;
+
   void loginUser({
   required String email,
   required String password,
 }) {
+    isLoading.value=true;
     DioHelper.postData(urlPath: ApiUrl.loginUser,
         data:{
         "email":email,
@@ -50,13 +54,15 @@ class AuthController extends GetxController {
     }).then((value) {
       if(value.statusCode==200){
         decoder(value.data["access"]);
+        isLoading.value=false;
         update();
-        print("doneeeeeeeeee");
       }else{
+        isLoading.value=false;
         showToast(message: "Invalid Email Or Password", state: ToastState.error);
       }
 
     }).catchError((error) {
+      isLoading.value=false;
       showToast(message: "Error Invalid Email Or Password", state: ToastState.error);
 
       print("error==========$error");
@@ -76,6 +82,7 @@ class AuthController extends GetxController {
     myId=payloadMap['user_id'];
     print(payloadMap['user_id']);
     CacheHelper.saveData(key: "myId", value: myId);
+
     Get.offNamed("/homeView");
   }
 
@@ -83,6 +90,11 @@ class AuthController extends GetxController {
   Rx<bool> isPasswordVisible = true.obs;
   void visibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
+  RxBool isDark=false.obs;
+  void changeMode() {
+    isDark.value = !isDark.value;
   }
 
   Rx<bool> isConfirmPasswordVisible = true.obs;

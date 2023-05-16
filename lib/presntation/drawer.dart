@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:toursim/utils/app_theme.dart';
-import 'package:toursim/utils/color_manager.dart';
-
+import 'package:toursim/core/language/en.dart';
+import 'package:toursim/core/utils/app_theme.dart';
+import 'package:toursim/core/utils/strings_manager.dart';
 import '../controller/constant.dart';
 import '../controller/home_controller.dart';
+import '../core/utils/color_manager.dart';
 import '../network/local/cache_helper.dart';
 
 class DrawerNav extends StatelessWidget {
@@ -44,29 +45,33 @@ class DrawerNav extends StatelessWidget {
                     decoration:  BoxDecoration(
                       color:controller.isDark.value
                           ?ColorsManager.dark:ColorsManager.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(57.5 ),
-                        bottomLeft: Radius.circular(57.5 ),
+                      borderRadius:  const BorderRadiusDirectional.only(
+                        topStart: Radius.circular(57.5 ),
+                        bottomStart: Radius.circular(57.5 ),
                       ),
-                      boxShadow: const [
+                      boxShadow:  [
                         BoxShadow(
                           color: Color(0xe5363e4c),
-                          offset: Offset(6 , 6 ),
+                          offset: Offset.fromDirection(6,6),
                           blurRadius: 15 ,
                         ),
                         BoxShadow(
                           color: Color(0xe564748c),
-                          offset: Offset(-6 , -6 ),
+                          offset:controller.isEnglish.value?
+                          Offset.fromDirection(-6,-6)
+                              :Offset.fromDirection(6,6),
                           blurRadius: 6 ,
                         ),
                         BoxShadow(
                           color: Color(0x33363e4c),
-                          offset: Offset(6 , -6 ),
+                          offset: Offset.fromDirection(6,-6),
                           blurRadius: 6 ,
                         ),
                         BoxShadow(
                           color: ColorsManager.primary,
-                          offset: Offset(-10 , 10 ),
+                          offset:controller.isEnglish.value?
+                          Offset.fromDirection(-10,10)
+                              :Offset.fromDirection(10,-10),
                           blurRadius: 8 ,
                         ),
                       ],
@@ -82,9 +87,9 @@ class DrawerNav extends StatelessWidget {
                           child: Stack(
                             alignment: AlignmentDirectional.center,
                             children: [
-                              Positioned(
-                                // ellipse67dt (3:53)
-                                left: 10 ,
+                              PositionedDirectional(
+                                start: 10 ,
+                                end: 10 ,
                                 top: 45 ,
                                 child: Align(
                                   alignment: AlignmentDirectional.center,
@@ -102,9 +107,10 @@ class DrawerNav extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Positioned(
+                              PositionedDirectional(
                                 // ellipse11YjC (3:56)
-                                left: 8 ,
+                                start: controller.isEnglish.value?8:null ,
+                                end: controller.isEnglish.value?null:8,
                                 top: 23 ,
                                 child: Align(
                                   child: CircleAvatar(
@@ -121,9 +127,10 @@ class DrawerNav extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Positioned(
+                              PositionedDirectional(
                                 // ellipse124Se (3:57)
-                                left: 60 ,
+                                start: controller.isEnglish.value?60:null ,
+                                end:  controller.isEnglish.value?null:60,
                                 top: 12 ,
                                 child: Align(
                                   child: CircleAvatar(
@@ -140,9 +147,10 @@ class DrawerNav extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Positioned(
+                              PositionedDirectional(
                                 // ellipse13aA6 (3:58)
-                                left: 42,
+                                start:controller.isEnglish.value? 42:null,
+                                end:  controller.isEnglish.value?null:42,
                                 top: 6 ,
                                 child: Align(
                                   child: CircleAvatar(
@@ -169,7 +177,7 @@ class DrawerNav extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Text(
                           myPerson!.phone,
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -187,7 +195,7 @@ class DrawerNav extends StatelessWidget {
                     ),
                   ),
                 ),
-                _language(context,controller),
+                _language(context),
                 const Spacer(),
                 Container(
                   // autogrouppgt2he2 (NGF7jXmNo3LZ1Q6v8dpGt2)
@@ -216,7 +224,7 @@ class DrawerNav extends StatelessWidget {
                             tileColor: ColorsManager.primary,
                             leading: const Icon(Icons.logout,color: ColorsManager.primary,),
                             title:  Text(
-                              'Logout',
+                              AppStrings.logout.tr,
                               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                 color: ColorsManager.primary,
                               ),
@@ -236,21 +244,33 @@ class DrawerNav extends StatelessWidget {
     );
   }
 
-  Widget _language(BuildContext context,HomeController controller,)=>Padding(
+  Widget _language(BuildContext context)=>Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          width: 140 ,
-          alignment: AlignmentDirectional.center,
-          decoration:itemDecoration(controller),
-          child: TextButton(
-              onPressed: (){
-              }, child:  Text("English",
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-            color: ColorsManager.primary,
-          ),)),
+        GetX<HomeController>(
+            init: HomeController(),
+            builder: (controller) {
+            return Container(
+              width: 140 ,
+              alignment: AlignmentDirectional.center,
+              decoration:itemDecoration(controller),
+              child: TextButton(
+                  onPressed: (){
+                    if(Get.locale==const Locale('ar')) {
+                      Get.updateLocale(const Locale('en'));
+                      controller.changeLang(true);
+                    }else{
+                      Get.updateLocale(const Locale('ar'));
+                      controller.changeLang(false);
+                    }
+                  }, child:  Text(AppStrings.lang.tr,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                color: ColorsManager.primary,
+              ),)),
+            );
+          }
         ),
         const Spacer(),
         _mode(),
@@ -291,30 +311,29 @@ class DrawerNav extends StatelessWidget {
     }
   );
 
-
   Decoration itemDecoration(controller)=>BoxDecoration(
     color:controller.isDark.value
         ?ColorsManager.dark:ColorsManager.white,// const Color(0xff4d596c),
     borderRadius: BorderRadius.circular(35.5 ),
-    boxShadow: const [
+    boxShadow:  [
       BoxShadow(
-        color: Color(0xe5363e4c),
-        offset: Offset(6 , 6 ),
+        color: const Color(0xe5363e4c),
+        offset: Offset.fromDirection(6,6),
         blurRadius: 7.5 ,
       ),
       BoxShadow(
-        color: Color(0xe593632d),
-        offset: Offset(-6 , -6 ),
+        color: const Color(0xe593632d),
+        offset: Offset.fromDirection(-6,-6),
         blurRadius: 6 ,
       ),
       BoxShadow(
-        color: Color(0x33363e4c),
-        offset: Offset(6 , -6 ),
+        color: const Color(0x33363e4c),
+        offset: Offset.fromDirection(6,-6),
         blurRadius: 6 ,
       ),
       BoxShadow(
         color: ColorsManager.primary,
-        offset: Offset(-6 , 6 ),
+        offset: Offset.fromDirection(6,6),
         blurRadius: 6 ,
       ),
     ],

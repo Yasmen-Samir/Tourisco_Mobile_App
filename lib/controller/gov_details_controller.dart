@@ -15,11 +15,11 @@ class GovDetailsController extends GetxController {
    super.onInit();
  }
 
-   GovDetails? govs ;
+   GovDetailsModel? govs ;
   void getGovDetails(int id) {
     DioHelper.getData(urlPath: ApiUrl.govDetails(id))
         .then((value) {
-      govs=GovDetails.fromJson(value.data);
+      govs=GovDetailsModel.fromJson(value.data);
       update();
     });
   }

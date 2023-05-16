@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
+import 'package:toursim/helper/constants.dart';
 import 'package:toursim/models/gov.dart';
+import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/person.dart';
 
 import '../network/remote/api_url.dart';
@@ -18,7 +20,7 @@ class HomeController extends GetxController {
  @override
   onInit(){
    super.onInit();
-   getGov();
+   getAllGovs(language);
    getUserData();
  }
 RxBool isDark=false.obs;
@@ -27,18 +29,29 @@ RxBool isDark=false.obs;
      isDark.value=!isDark.value;
      update();
  }
- void updateSystemOverlayStyle(bool isDark) {
-   FlutterStatusbarcolor.setStatusBarWhiteForeground(isDark);
-   update();
+
+ RxBool isEnglish=true.obs;
+ Future<void> changeLang(bool isEnglish) async {
+   if(isEnglish) {
+     language="en";
+   }else{
+     language="ar";
+   }
+   print(language);
+   this.isEnglish.value=isEnglish;
+     update();
+   getAllGovs(language);
+
  }
 
 
- List<Gov> govs=[];
-  void getGov() {
-    DioHelper.getData(urlPath: ApiUrl.governorates)
+ List<GovDetailsModel> govs=[];
+  Future<void> getAllGovs(String lan) async {
+    print("=================");
+    await DioHelper.getData(urlPath: ApiUrl.govAllGovs())
         .then((value) {
-      govs=List.from(value.data.map((e)=>Gov.fromJson(e)));
-      print(govs[0].name);
+          print(value.data);
+      govs=List.from(value.data.map((e)=>GovDetailsModel.fromJson(e)));
       update();
     }).catchError((error){
       print(error);

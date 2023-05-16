@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toursim/componats/componants.dart';
-import 'package:toursim/utils/componants/my_button.dart';
-
-import '../utils/componants/componants.dart';
-import '../utils/strings_manager.dart';
+import '../core/componants/componants.dart';
+import '../core/componants/my_button.dart';
+import '../core/utils/strings_manager.dart';
 
 class ForgetPassword extends StatelessWidget {
   ForgetPassword({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class ForgetPassword extends StatelessWidget {
                   prefix: Icons.email,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return AppStrings.invalidEmail;
+                      return AppStrings.invalidEmail.tr;
                     }
                     return null;
                   },

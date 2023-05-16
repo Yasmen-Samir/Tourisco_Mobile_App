@@ -1,16 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/landmark_model.dart';
-import 'package:toursim/utils/color_manager.dart';
-import 'package:toursim/utils/strings_manager.dart';
+import 'package:toursim/core/utils/strings_manager.dart';
 
 import '../controller/gov_details_controller.dart';
+import '../core/utils/assets_manager.dart';
+import '../core/utils/color_manager.dart';
 import '../network/remote/api_url.dart';
-import '../utils/assets_manager.dart';
 
 class GovDetails extends StatelessWidget {
-  late int govId;
+  //late int govId;
+  late GovDetailsModel govDetails;
   GovDetails({ Key? key}) : super(key: key);
 
 
@@ -35,79 +37,80 @@ class GovDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    govId = Get.arguments as int;
+    govDetails = Get.arguments as GovDetailsModel;
     return GetBuilder<GovDetailsController>(
-        init: GovDetailsController()..getGovDetails(govId)..getLandMarkForGov(govId),
-        builder: (controller) {
-        return controller.govs!=null ?Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: (){
-                Get.back();
-              },
-              icon: const Icon(Icons.arrow_back_ios),
-            ),
-            backgroundColor: ColorsManager.darkYellow,
-            title:  Text(controller.govs!.title,),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: ColorsManager.darkYellow,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                    padding: const EdgeInsetsDirectional.all(10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child:CachedNetworkImage(
-                        placeholder: (context, url) => Image.asset(
-                          ImagesManager.loading2,
+      init: GovDetailsController()..getLandMarkForGov(govDetails.gov.id),
+      builder: (controller) {
+        return Scaffold(
+              appBar: AppBar(
+                systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
+                elevation: 0,
+                leading: IconButton(
+                  onPressed: (){
+                    Get.back();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+                backgroundColor: ColorsManager.darkYellow,
+                title:  Text(govDetails.title,),
+                centerTitle: true,
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: ColorsManager.darkYellow,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
-                        imageUrl:  "${ApiUrl.baseLink}${controller.govs!.gov.emblem}",
-                        fit: BoxFit.fitWidth,
-                        width: double.infinity,
-                        height: 200,
                       ),
+                        padding: const EdgeInsetsDirectional.all(10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child:CachedNetworkImage(
+                            placeholder: (context, url) => Image.asset(
+                              ImagesManager.loading2,
+                            ),
+                            imageUrl:  "${ApiUrl.baseLink}${govDetails.gov.emblem}",
+                            fit: BoxFit.fitWidth,
+                            width: double.infinity,
+                            height: 200,
+                          ),
+                        ),
                     ),
+                     Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(AppStrings.about.tr,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(govDetails.description,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),),
+                    ),
+                    _buildTitle("CULTURAL TOURISM"),
+                    _buildLandmarkWidget(controller.landmarks),
+                    _buildTitle("ENTERTAINMENT TOURISM"),
+                    _buildLandmarkWidget(controller.landmarks),
+                    _buildTitle("MEDICAL TOURISM"),
+                    _buildLandmarkWidget(controller.landmarks),
+                    _buildTitle("ECO TOURISM"),
+                    _buildLandmarkWidget(controller.landmarks),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(AppStrings.about.toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(controller.govs!.description,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                    ),),
-                ),
-                _buildTitle("CULTURAL TOURISM"),
-                _buildLandmarkWidget(controller.landmarks),
-                _buildTitle("ENTERTAINMENT TOURISM"),
-                _buildLandmarkWidget(controller.landmarks),
-                _buildTitle("MEDICAL TOURISM"),
-                _buildLandmarkWidget(controller.landmarks),
-                _buildTitle("ECO TOURISM"),
-                _buildLandmarkWidget(controller.landmarks),
-              ],
-            ),
-          ),
-        ):const Scaffold(body: Center(child: CircularProgressIndicator()));
+              ),
+            );
       }
     );
+
   }
   Widget _buildTitle(String title)=>Padding(
     padding: const EdgeInsets.all(8.0),
@@ -129,6 +132,7 @@ class GovDetails extends StatelessWidget {
       ),
     ),
   );
+
   Widget _buildLandmarkWidget(List<LandMarkModel>  landMarks) => GridView.count(
     crossAxisCount:landMarks.length==1?1: 2,
     crossAxisSpacing: 1,

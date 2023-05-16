@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toursim/controller/home_controller.dart';
+import 'package:toursim/core/utils/strings_manager.dart';
 import 'package:toursim/models/gov.dart';
+import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/network/remote/api_url.dart';
 import 'package:toursim/presntation/drawer.dart';
-import 'package:toursim/utils/assets_manager.dart';
-import 'package:toursim/utils/color_manager.dart';
-
-import 'presntation/drower.dart';
+import '../core/utils/assets_manager.dart';
+import '../core/utils/color_manager.dart';
 
 class HomeView extends GetWidget<HomeController> {
   HomeView({Key? key}) : super(key: key);
@@ -26,7 +26,8 @@ class HomeView extends GetWidget<HomeController> {
         return Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
-            title: const Text("Home"),
+            centerTitle: true,
+            title:  Text(AppStrings.home.tr),
             leading: IconButton(
               onPressed:(){
                 scaffoldKey.currentState?.openDrawer();
@@ -54,7 +55,7 @@ class HomeView extends GetWidget<HomeController> {
       );
 
 
-  Widget _getBannersWidget(List<Gov> banners) {
+  Widget _getBannersWidget(List<GovDetailsModel> banners) {
     return Container(
       decoration: BoxDecoration(
         color: ColorsManager.lightGray,
@@ -82,7 +83,7 @@ class HomeView extends GetWidget<HomeController> {
                 placeholder: (context, url) => Image.asset(
                   ImagesManager.loading2,
                 ),
-                imageUrl:  "${ApiUrl.baseLink}${banners[index].emblem}",
+                imageUrl:  "${ApiUrl.baseLink}${banners[index].gov.emblem}",
                 fit: BoxFit.cover,
                 height: 110,
               ),
@@ -103,7 +104,7 @@ class HomeView extends GetWidget<HomeController> {
   }
 
 
-  Widget _getStoresWidget(List<Gov>  stores) => GridView.count(
+  Widget _getStoresWidget(List<GovDetailsModel>  stores) => GridView.count(
     crossAxisCount: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
@@ -114,7 +115,7 @@ class HomeView extends GetWidget<HomeController> {
     children: List.generate(stores.length, (index) {
       return InkWell(
         onTap: () {
-          Get.toNamed("/govDetails",arguments: stores[index].id);
+          Get.toNamed("/govDetails",arguments: stores[index]);
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -135,14 +136,14 @@ class HomeView extends GetWidget<HomeController> {
                   placeholder: (context, url) => Image.asset(
                     ImagesManager.loading1,
                   ),
-                  imageUrl: "${ApiUrl.baseLink}${stores[index].emblem}",
+                  imageUrl: "${ApiUrl.baseLink}${stores[index].gov.emblem}",
                   fit: BoxFit.cover,
                   height: 110,
                 ),
               ),
             ),
             const SizedBox(height: 5,),
-            Text(stores[index].name,
+            Text(stores[index].title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),),

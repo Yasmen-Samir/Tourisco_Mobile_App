@@ -1,6 +1,6 @@
 import 'package:toursim/models/gov.dart';
 
-class GovDetails {
+class GovDetailsModel {
   late int id;
   late String title;
   late Gov gov;
@@ -10,7 +10,7 @@ class GovDetails {
   late bool active;
 
 
-  GovDetails(
+  GovDetailsModel(
       {
         required this.id,
       required this.title,
@@ -21,8 +21,8 @@ class GovDetails {
       required this.active,
       }
       );
-  GovDetails.instance();
-  GovDetails.fromJson(Map<String, dynamic> json) {
+  GovDetailsModel.instance();
+  GovDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     title = json["title"];
     gov = Gov.fromJson(json["governorate"]);
