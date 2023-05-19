@@ -12,7 +12,7 @@ import '../network/remote/api_url.dart';
 
 class GovDetails extends StatelessWidget {
   //late int govId;
-  late GovDetailsModel govDetails;
+   GovDetailsModel govDetails = Get.arguments as GovDetailsModel;
   GovDetails({ Key? key}) : super(key: key);
 
 
@@ -37,7 +37,6 @@ class GovDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    govDetails = Get.arguments as GovDetailsModel;
     return GetBuilder<GovDetailsController>(
       init: GovDetailsController()..getLandMarkForGov(govDetails.gov.id),
       builder: (controller) {

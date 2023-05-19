@@ -8,5 +8,6 @@ class ApiUrl{
   static  String govAllGovs()=>"$language/governorates/";
   static  String govDetails(int id)=>"$language/governorates/$id";
   static  String getLandMarkForGov(int id)=>"$language/governorate_landmarks/$id/";
+  static  String getEventForLandMark(int id)=>"$language/$id/landmark_events";
   static  String userData(int id)=>"users/$id";
 }

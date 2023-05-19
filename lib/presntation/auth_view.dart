@@ -457,7 +457,7 @@ class AuthView extends GetWidget<AuthController> {
           ),
         );
 
-Widget selectAuth(context,AuthController controller){
+  Widget selectAuth(context,AuthController controller){
 
   if(controller.loginPage.value){
     return  Expanded(

@@ -45,25 +45,23 @@ class LandMarkModel {
     };
   }
 }
+
 class LandMark {
   late int id;
   late String name;
   late String image;
-  late int govObject;
 
   LandMark(
       {
         required this.id,
       required this.name,
       required this.image,
-      required this.govObject,
       }
       );
   LandMark.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];
     image = json["image"];
-    govObject = json["govObject"];
   }
 
   Map<String, dynamic> toMaP() {
@@ -71,7 +69,6 @@ class LandMark {
       "id":id,
       "name":name,
       "image":image,
-      "govObject":govObject,
     };
   }
 }

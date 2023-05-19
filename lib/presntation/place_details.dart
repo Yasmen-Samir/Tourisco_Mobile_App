@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/controller/gov_details_controller.dart';
+import 'package:toursim/models/event_model.dart';
 import 'package:toursim/models/landmark_model.dart';
 import '../core/utils/assets_manager.dart';
 import '../core/utils/color_manager.dart';
@@ -200,6 +202,7 @@ class PlaceDetails extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
+            _getEvents(),
             const Text(
               "GALLERY",
               style: TextStyle(
@@ -214,7 +217,7 @@ class PlaceDetails extends StatelessWidget {
               endIndent: MediaQuery.of(context).size.width * .4,
               thickness: 2,
             ),
-            _getStoresWidget(banner),
+            _getGalleryWidget(banner),
             const SizedBox(
               height: 50,
             ),
@@ -240,7 +243,7 @@ class PlaceDetails extends StatelessWidget {
       ),
     );
   }
-  Widget _getStoresWidget(List<Map<String,dynamic>>  stores) => GridView.count(
+  Widget _getGalleryWidget(List<Map<String,dynamic>>  stores) => GridView.count(
     crossAxisCount:stores.length==1?1: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 20,
@@ -262,4 +265,33 @@ class PlaceDetails extends StatelessWidget {
     }),
   );
 
+  Widget _getEvents()=>GetBuilder<GovDetailsController>(
+    init: GovDetailsController(),
+    builder: (controller) {
+      controller.getEventForLandMark(model.landMark.id);
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controller.events.length,
+        itemBuilder: (context, index) =>_eventItem(controller.events[index]) ,
+      );
+    }
+  );
+  Widget _eventItem(EventModel model)=>Card(
+    child:Container(
+      width: 200,
+      height: 150,
+      color: Colors.grey,
+      child:Column(
+        children: [
+          Text(model.title),
+          Text(model.active?"Active":"Not Active Now"),
+          Text("Open Time :${model.event.openTime}"),
+          Text("Closed Time :${model.event.closeTime}"),
+          Text("Created in ${model.event.created.split("T")[0]}"
+              "  ${model.event.created.split("T")[1].substring(0,5)}"),
+        ],
+      ),
+    ) ,
+  );
 }
