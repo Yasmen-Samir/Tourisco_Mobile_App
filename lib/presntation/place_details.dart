@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:toursim/controller/gov_details_controller.dart';
 import 'package:toursim/models/event_model.dart';
@@ -39,6 +40,7 @@ class PlaceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.find<GovDetailsController>().getEventForLandMark(model.landMark.id);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -181,9 +183,9 @@ class PlaceDetails extends StatelessWidget {
                   border: Border.all(color: ColorsManager.darkGray,
                       width: 3),
                 ),
-                child:  Row(
+                child:  const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text("09:00 AM - 05:00 PM",
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
@@ -268,28 +270,94 @@ class PlaceDetails extends StatelessWidget {
   Widget _getEvents()=>GetBuilder<GovDetailsController>(
     init: GovDetailsController(),
     builder: (controller) {
-      controller.getEventForLandMark(model.landMark.id);
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: controller.events.length,
-        itemBuilder: (context, index) =>_eventItem(controller.events[index]) ,
+        itemBuilder: (context, index) =>_eventItem(context,controller.events[index]) ,
       );
     }
   );
-  Widget _eventItem(EventModel model)=>Card(
+  Widget _eventItem(context,EventModel model)=>Card(
     child:Container(
-      width: 200,
-      height: 150,
-      color: Colors.grey,
+      width: double.infinity,
+      padding: const EdgeInsetsDirectional.all(20),
+      decoration:BoxDecoration(
+        color: ColorsManager.lightGray,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: ColorsManager.darkGray,
+            width: 3),
+      ),
       child:Column(
         children: [
-          Text(model.title),
-          Text(model.active?"Active":"Not Active Now"),
-          Text("Open Time :${model.event.openTime}"),
-          Text("Closed Time :${model.event.closeTime}"),
-          Text("Created in ${model.event.created.split("T")[0]}"
-              "  ${model.event.created.split("T")[1].substring(0,5)}"),
+          Text(model.title, style: Theme.of(context).textTheme.titleLarge,),
+          const SizedBox(height: 10,),
+          Text("Created in", style: Theme.of(context).textTheme.titleMedium,),
+          const SizedBox(height: 5,),
+          Text("${model.event.created.split("T")[0]}"
+              "  ${model.event.created.split("T")[1].substring(0,5)}",
+            style: Theme.of(context).textTheme.bodyLarge,),
+          const SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              if(model.active)
+              const Icon(Icons.check,
+              color: Colors.green,
+              size: 40,),
+              if(!model.active)
+              const Icon(Icons.not_interested,
+              color: Colors.red,
+              size: 35,),
+              const Spacer(flex: 1),
+              Text(model.active?"Active":"Not Active Now",
+                style: Theme.of(context).textTheme.titleMedium,),
+              const Spacer(flex: 2),
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+            Image.asset("assets/images/clook.png"),
+              const Spacer(flex: 1),
+              Column(
+                children: [
+                  Text("Open Time : ${model.event.openTime}",
+                  style: Theme.of(context).textTheme.bodyLarge,),
+                  const SizedBox(height: 5,),
+                  Text("Closed Time : ${model.event.closeTime}",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+              const Spacer(flex: 2),
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                ImagesManager.ticket1,
+                width: 80,
+              ),
+              const Spacer(flex: 1,),
+              Column(
+                children: [
+                  Text("Name:${model.ticketModel!.ticket.name}",
+                    style: Theme.of(context).textTheme.bodyLarge,),
+                  Text("price: ${model.ticketModel!.ticket.price}",
+                    style: Theme.of(context).textTheme.bodyLarge,),
+                  Text("Created in: ${model.ticketModel!.ticket.created.split("T")[0]}"
+                      "  ${model.ticketModel!.ticket.created.split("T")[1].substring(0,5)}",
+                    style: Theme.of(context).textTheme.bodyLarge,),
+                ],
+              ),
+              const Spacer(flex: 2,),
+            ],
+          ),
+
         ],
       ),
     ) ,

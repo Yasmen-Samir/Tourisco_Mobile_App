@@ -50,7 +50,11 @@ class LandMark {
   late int id;
   late String name;
   late String image;
-
+  late double area;
+  late int tourismCategoryObject;
+  late int userCreatedBy;
+  late List<String> images;
+  late List<String> reviews;
   LandMark(
       {
         required this.id,
@@ -62,6 +66,10 @@ class LandMark {
     id = json["id"];
     name = json["name"];
     image = json["image"];
+    tourismCategoryObject = json["tourismCategoryObject"];
+    userCreatedBy = json["user_created_by"];
+    images = List.from(json["images"].map((e)=>e.toString()));
+    reviews =List.from(json["reviews"].map((e)=>e.toString()));
   }
 
   Map<String, dynamic> toMaP() {
@@ -69,6 +77,10 @@ class LandMark {
       "id":id,
       "name":name,
       "image":image,
+      "tourismCategoryObject":tourismCategoryObject,
+      "user_created_by":userCreatedBy,
+      "images":images,
+      "reviews":reviews,
     };
   }
 }

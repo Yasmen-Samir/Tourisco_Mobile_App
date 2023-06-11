@@ -42,6 +42,19 @@ class AppStrings {
   static const String male = "male";
   static const String female = "female";
   static const String gender = "gender";
+  //add place
+  static const String addPlace = "add_place";
+  static const String name = "name";
+  static const String address = "address";
+  static const String area = "area";
+  static const String location = "location";
+  static const String tourismCategory = "tourism_category";
+  static const String image = "image";
+  static const String founder = "founder";
+  static const String foundationData = "foundation_data";
+  static const String description = "description";
+  static const String mustNotBeEmpty = "must_not_be_Empty";
+  static const String add = "add";
 
   // error handler
   static const String badRequestError = "bad_request_error";

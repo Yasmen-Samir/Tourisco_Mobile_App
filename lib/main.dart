@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toursim/network/local/cache_helper.dart';
 import 'package:toursim/network/remote/dio_helper.dart';
+import 'package:toursim/presntation/add_place.dart';
 import 'package:toursim/presntation/forget_password.dart';
 import 'package:toursim/core/utils/app_theme.dart';
 import 'package:toursim/presntation/home.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/forgetPassword",page: () =>  ForgetPassword(),),
         GetPage(name: "/govDetails",page: () =>  GovDetails()),
         GetPage(name: "/placeDetails",page: () =>  PlaceDetails(),),
+        GetPage(name: "/addPlace",page: () =>   AddPlace(),),
       ],
     );
   }

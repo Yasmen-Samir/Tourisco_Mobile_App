@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/models/category_model.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/landmark_model.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
@@ -38,7 +39,7 @@ class GovDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<GovDetailsController>(
-      init: GovDetailsController()..getLandMarkForGov(govDetails.gov.id),
+      init: GovDetailsController()..getLandMarkForGov(govDetails.gov.id)..getAllCategories(),
       builder: (controller) {
         return Scaffold(
               appBar: AppBar(
@@ -95,14 +96,22 @@ class GovDetails extends StatelessWidget {
                           fontSize: 16.0,
                         ),),
                     ),
-                    _buildTitle("CULTURAL TOURISM"),
+                   /* _buildTitle("CULTURAL TOURISM"),
                     _buildLandmarkWidget(controller.landmarks),
                     _buildTitle("ENTERTAINMENT TOURISM"),
                     _buildLandmarkWidget(controller.landmarks),
                     _buildTitle("MEDICAL TOURISM"),
                     _buildLandmarkWidget(controller.landmarks),
                     _buildTitle("ECO TOURISM"),
-                    _buildLandmarkWidget(controller.landmarks),
+                    _buildLandmarkWidget(controller.landmarks),*/
+                    const SizedBox(height: 30,),
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed("/addPlace");
+                      },
+                        child: Image.asset("assets/images/add_place.png")),
+                    const SizedBox(height: 30,),
+                    _listLandMarkCategories(controller.categories,controller.landmarks),
                   ],
                 ),
               ),
@@ -111,6 +120,35 @@ class GovDetails extends StatelessWidget {
     );
 
   }
+  Widget _listLandMarkCategories(List<CategoryModel> categories,List<LandMarkModel> landmarks){
+
+    List<LandMarkModel> landmarkFiltered=[];
+    return ListView.separated(
+      shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: categories.length,
+    itemBuilder:(context, index){
+      landmarkFiltered=[];
+      for (var element in landmarks) {
+        if(element.landMark.tourismCategoryObject==categories[index].category.id){
+        landmarkFiltered.add(element);
+        }
+      }
+      if(landmarkFiltered.isNotEmpty) {
+        return  Column(
+        children: [
+          _buildTitle(categories[index].category.name.toString().replaceAll("_", " ")),
+          _buildLandmarkWidget(landmarkFiltered),
+        ],
+      );
+      }
+      else{
+        return const SizedBox();
+      }
+    },
+   separatorBuilder: (context, index) => const SizedBox(height: 10,),
+   );
+   }
   Widget _buildTitle(String title)=>Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(

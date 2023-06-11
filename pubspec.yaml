@@ -20,6 +20,7 @@ dependencies:
   shared_preferences: ^2.1.0
   flutter_statusbarcolor_ns: ^0.5.0
   conditional_builder_null_safety: ^0.0.6
+  image_picker: ^0.8.7+5
 
 dev_dependencies:
   flutter_test:

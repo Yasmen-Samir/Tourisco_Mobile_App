@@ -25,6 +25,7 @@ Widget myFromField(
       bool autoFocus = false,
       bool readOnly = false,
       TextAlign textAlign = TextAlign.start,
+      Color fillColor=ColorsManager.fill,
     }) =>
     TextFormField(
       controller: controller,
@@ -42,7 +43,7 @@ Widget myFromField(
       inputFormatters: formatter,
       autofocus: autoFocus,
       decoration: InputDecoration(
-        fillColor: ColorsManager.fill,
+        fillColor: fillColor,
         filled: true,
         labelText: labelText,
         hintText: hintText,

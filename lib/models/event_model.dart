@@ -1,10 +1,13 @@
 
+import 'package:toursim/models/ticket_model.dart';
+
 class EventModel {
   late int id;
   late String title;
   late String created;
   late bool active;
   late Event event;
+   TicketModel? ticketModel;
 
   EventModel(
       {
@@ -13,6 +16,7 @@ class EventModel {
       required this.created,
       required this.active,
       required this.event,
+       this.ticketModel,
       }
       );
   EventModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +59,7 @@ class Event {
       );
   Event.fromJson(Map<String, dynamic> json) {
     id = json["id"];
+    name = json["name"];
     isMain = json["isMain"];
     openTime = json["openTime"];
     closeTime = json["closeTime"];
