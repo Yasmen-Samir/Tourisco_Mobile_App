@@ -8,7 +8,7 @@ class ApiUrl{
   static const String landmarks="landmarks/";
   static const String landmarksWithBase='https://tourisco.onrender.com/api/landmarks/';
   static  String tourismCategories="$language/tourism_categories/";
-  static  String hotels="'https://booking-com.p.rapidapi.com/v1/hotels/locations'";
+  static const String hotels='https://booking-com.p.rapidapi.com/v1/hotels/locations';
   static  String govAllGovs()=>"$language/governorates/";
   static  String govDetails(int id)=>"$language/governorates/$id";
   static  String getLandMarkForGov(int id)=>"$language/governorate_landmarks/$id/";

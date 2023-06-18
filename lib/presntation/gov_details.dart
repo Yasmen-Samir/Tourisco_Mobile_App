@@ -141,7 +141,6 @@ class GovDetails extends StatelessWidget {
 
   }
   Widget _listLandMarkCategories(List<CategoryModel> categories,List<LandMarkModel> landmarks){
-
     List<LandMarkModel> landmarkFiltered=[];
     return ListView.separated(
       shrinkWrap: true,
@@ -169,6 +168,7 @@ class GovDetails extends StatelessWidget {
    separatorBuilder: (context, index) => const SizedBox(height: 10,),
    );
    }
+
   Widget _buildTitle(String title)=>Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(

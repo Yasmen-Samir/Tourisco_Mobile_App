@@ -42,6 +42,10 @@ class AppStrings {
   static const String male = "male";
   static const String female = "female";
   static const String gender = "gender";
+  static const String rating = "rating";
+
+
+
   //add place
   static const String addPlace = "add_place";
   static const String name = "name";

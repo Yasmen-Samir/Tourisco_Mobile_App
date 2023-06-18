@@ -1,8 +1,6 @@
 
 
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 
 class LandMarkModel {
   late int id;
@@ -47,7 +45,7 @@ class LandMark {
   late int tourismCategoryObject;
   late int userCreatedBy;
   late List<ImageModel> images;
-  late List<String> reviews;
+  late List<Review> reviews;
   LandMark(
       {
         required this.id,
@@ -63,7 +61,7 @@ class LandMark {
     tourismCategoryObject = json["tourismCategoryObject"]??1;
     userCreatedBy = json["user_created_by"];
     images = List.from(json["images"].map((e)=>ImageModel.fromJson(e)));
-    reviews =List.from(json["reviews"].map((e)=>e.toString()));
+    reviews = List.from(json["reviews"].map((e)=>Review.fromJson(e)));
   }
 
 
@@ -86,6 +84,60 @@ class ImageModel{
     active = json["active"];
   }
 }
+class Review {
+  late int id;
+  late List<ImageModel> images;
+  late double rating;
+  late String comment;
+   int? objectId;
+  late String created;
+  late bool active;
+  late UserInReview user;
+   int? contentType;
+
+  Review({
+    required this.id,
+    required this.images,
+    required this.rating,
+    required this.comment,
+    required this.objectId,
+    required this.created,
+    required this.active,
+    required this.user,
+    required this.contentType,
+  });
+
+  Review.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    images = List.from(json["images"].map((e)=>ImageModel.fromJson(e)));
+    created = json["created"];
+    rating = json["rating"];
+    comment = json["comment"];
+    objectId = json["objectId"];
+    active = json["active"];
+    user = UserInReview.fromJson(json["user"]);
+    contentType = json["contentType"];
+  }
+}
+
+class UserInReview {
+  late int id;
+  late String username;
+  late String profileImage;
+  UserInReview({
+    required this.id,
+    required this.username,
+    required this.profileImage,
+  });
+
+  UserInReview.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    username = json["username"];
+    profileImage = json["profile_image"];
+  }
+}
+
+
 
 class LandMarkCreateModel {
   late String name;

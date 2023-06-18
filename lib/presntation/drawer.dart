@@ -79,7 +79,8 @@ class DrawerNav extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
+                        if(myPerson!=null)
+                          Container(
                           margin: const EdgeInsets.fromLTRB(
                               30 , 0 , 0 , 10 ),
                           width: double.infinity,
@@ -170,7 +171,8 @@ class DrawerNav extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text(
+                        if(myPerson!=null)
+                          Text(
                           myPerson!.username.toUpperCase(),
                           style:Theme.of(context).textTheme.titleMedium!.copyWith(
                             fontSize: 25.0,
@@ -178,14 +180,16 @@ class DrawerNav extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10,),
-                        Text(
+                        if(myPerson!=null)
+                          Text(
                           myPerson!.phone,
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: ColorsManager.primary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        if(myPerson!=null)
+                          Text(
                           myPerson!.email,
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: ColorsManager.primary,

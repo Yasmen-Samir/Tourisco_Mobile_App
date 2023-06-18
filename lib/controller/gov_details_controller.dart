@@ -13,17 +13,13 @@ import 'package:toursim/models/landmark_model.dart';
 import 'package:toursim/models/place_model.dart';
 import 'package:toursim/models/ticket_model.dart';
 import 'package:dio/dio.dart' as dioo;
-import 'package:http/http.dart'as http;
 
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
 
 class GovDetailsController extends GetxController {
 
-  @override
-  onInit() {
-    super.onInit();
-  }
+
 
   GovDetailsModel? govs;
 
@@ -39,12 +35,10 @@ class GovDetailsController extends GetxController {
   List<LandMarkModel> landmarksSearch = [];
 
   void getLandMarkForGov(int id) {
+    print("================$id====================");
     DioHelper.getData(urlPath: ApiUrl.getLandMarkForGov(id))
         .then((value) {
-      print("==============Hello================");
       landmarks = List.from(value.data.map((e) => LandMarkModel.fromJson(e)));
-      print("==============landmarks================");
-
       update();
     });
   }
@@ -66,7 +60,6 @@ class GovDetailsController extends GetxController {
     DioHelper.getData(urlPath: ApiUrl.getEventForLandMark(id))
         .then((value) async {
       events = List.from(value.data.map((e) => EventModel.fromJson(e)));
-      print("============${events.length}===================");
       for (var element in events) {
         element.ticketModel = await getTicketForEvent(element.id);
       }
@@ -77,7 +70,6 @@ class GovDetailsController extends GetxController {
   Future<TicketModel?> getTicketForEvent(int id) {
     return DioHelper.getData(urlPath: ApiUrl.getTicketForEvent(id))
         .then((value) {
-      print(value.data);
       return TicketModel.fromJson(value.data);
     });
   }
@@ -87,7 +79,6 @@ class GovDetailsController extends GetxController {
   void getAllCategories() {
     DioHelper.getData(urlPath: ApiUrl.tourismCategories)
         .then((value) {
-      print(value.data);
       categories = List.from(value.data.map((e) => CategoryModel.fromJson(e)));
       update();
     });
@@ -115,51 +106,7 @@ class GovDetailsController extends GetxController {
     update();
   }
 
-  void addPlace({
-    required String name,
-    required String address,
-    required double area,
-    required String location,
-    required int tourismCategory,
-    required String foundationDate,
-    required String founder,
-    required String description,
-  }) {
-    PlaceModel model = PlaceModel(name: name,
-        founder: founder,
-        address: address,
-        description: description,
-     );
-    DioHelper.postData(
-      urlPath: ApiUrl.landmarks, data:model.toMaP(),
-    );
-  }
 
-  Future<void> createLandMark(LandMarkCreateModel model) async {
-    var headers = {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg3NjMwMjM1LCJpYXQiOjE2ODY3NjYyMzUsImp0aSI6IjQ2YmYyNTY1N2NiMzQ5MDlhMDc5N2M4ZjcyNTcyNDg3IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJzdXBlcl9hZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiZ2VuZGVyIjoibWFsZSIsImlzX3ZlcmlmaWVkIjp0cnVlLCJpc19hY3RpdmUiOnRydWV9.Yf_btE5fCDPr0lR8cqSA8b0NXaiwMXBBdI0TCdm2CBc'
-    };
-    var request = http.MultipartRequest('POST', Uri.parse('https://tourisco.onrender.com/api/landmarks/'));
-    request.fields.addAll(model.toMaP());
-    request.files.add(await http.MultipartFile.fromPath(image!.path.split("/").last, image!.path));
-    request.headers.addAll(headers);
-  await request.send().then((value){
-
-    if(value.statusCode==200){
-      print(value.reasonPhrase);
-
-    }else{
-      print(value.reasonPhrase);
-    }
-  }).catchError((error){
-    print(error);
-
-  });
-
-
-
-
-  }
 
 
   bool loadingCreate=false;
@@ -201,15 +148,17 @@ class GovDetailsController extends GetxController {
   List<HotelModel> hotels=[];
 
   Future<void> getHotels(String city) async {
+    hotels=[];
+    print("=================$city===========================");
  var headers= {
-      'X-RapidAPI-Key': '3451c6c973mshb4d44a4d48fe1e7p12b902jsn70467bcbb868',
+      'X-RapidAPI-Key': 'e0e9dafe7bmsh71855364bd99b80p14a6c6jsn6c0e4be0f513',
     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
   };
     var dio=Dio();
      await  dio.get(ApiUrl.hotels,
         queryParameters: {
           "locale": 'en-us',
-          "name": city,
+          "name": city.toLowerCase(),
         },
         options: Options(headers: headers,),
       ).then((value){
@@ -220,6 +169,7 @@ class GovDetailsController extends GetxController {
         }));
         print(hotels);
      }).catchError((error){
+       print("=================Error===========================");
        if(error is DioError){
          print(error.response);
          showToast(message: error.response.toString().replaceAll(",", "\n"), state: ToastState.error);
