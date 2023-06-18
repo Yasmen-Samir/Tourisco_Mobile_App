@@ -1,15 +1,10 @@
 
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:get/get.dart';
-import 'package:toursim/componats/componants.dart';
 import 'package:toursim/helper/constants.dart';
-import 'package:toursim/models/gov.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/person.dart';
+import 'package:toursim/network/local/cache_helper.dart';
 
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
@@ -61,8 +56,14 @@ RxBool isDark=false.obs;
   void getUserData() {
     DioHelper.getData(urlPath: ApiUrl.userData(myId!))
         .then((value) {
+          print("=================");
+          print(value);
       myPerson=Person.fromJson(value.data);
       update();
+    }).catchError((error){
+      CacheHelper.removeData(key: "myId");
+      CacheHelper.removeData(key: "myAccess");
+      Get.offNamedUntil("/authView", (route) => false);
     });
   }
 

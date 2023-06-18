@@ -13,24 +13,7 @@ import '../core/utils/strings_manager.dart';
 class PlaceDetails extends StatelessWidget {
   PlaceDetails({Key? key}) : super(key: key);
   late LandMarkModel model= Get.arguments ;
-  List<Map<String, dynamic>> banner = [
-    {
-      "name": "Egyptian Musium",
-      "image": "https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name": "Egyptian Musium",
-      "image": "https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name": "Egyptian Musium",
-      "image": "https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name": "Egyptian Musium",
-      "image": "https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-  ];
+
   List<Map<String, dynamic>> single = [
     {
       "name": "Helwan Eye",
@@ -219,7 +202,7 @@ class PlaceDetails extends StatelessWidget {
               endIndent: MediaQuery.of(context).size.width * .4,
               thickness: 2,
             ),
-            _getGalleryWidget(banner),
+            _getGalleryWidget(model.landMark.images),
             const SizedBox(
               height: 50,
             ),
@@ -238,29 +221,41 @@ class PlaceDetails extends StatelessWidget {
               thickness: 2,
             ),
             const SizedBox(
+              height: 20,
+            ),
+            GetBuilder<GovDetailsController>(
+              init: GovDetailsController(),
+              builder: (controller) {
+                return TextButton(onPressed: (){
+                  controller.getHotels("");
+                }, child: Text("Hotels"));
+              }
+            ),
+            const SizedBox(
               height: 200,
             ),
+
           ],
         ),
       ),
     );
   }
-  Widget _getGalleryWidget(List<Map<String,dynamic>>  stores) => GridView.count(
-    crossAxisCount:stores.length==1?1: 2,
+  Widget _getGalleryWidget(List<ImageModel>  images) => GridView.count(
+    crossAxisCount:images.length==1?1: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 20,
-    childAspectRatio:stores.length==1?2.2:1.09,
+    childAspectRatio:images.length==1?2.2:1.09,
     physics: const ScrollPhysics(),
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 10),
-    children: List.generate(stores.length, (index) {
+    children: List.generate(images.length, (index) {
       return CircleAvatar(
         radius: 75,
         backgroundColor: ColorsManager.gray,
         child: CircleAvatar(
           radius: 75,
           backgroundImage: NetworkImage(
-            stores[index]["image"],
+            "${ApiUrl.baseLink}${images[index].image}",
           ),
         ),
       );

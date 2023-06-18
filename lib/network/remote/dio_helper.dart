@@ -1,5 +1,6 @@
 
 
+
 import 'package:dio/dio.dart';
 import 'package:toursim/network/remote/api_url.dart';
 
@@ -37,6 +38,18 @@ class DioHelper {
     String? language,
     String? token,
   }) async {
+    // dio.options.copyWith(
+    //   headers: {
+    //     "Content-Type":"multipart/form-data; boundary=<calculated when request is sent>",
+    //     "Content-Length":"<calculated when request is sent>",
+    //     "Host":"<calculated when request is sent>",
+    //     "User-Agent":"PostmanRuntime/7.32.2",
+    //     "Accept":"*/*",
+    //     "Accept-Encoding":"gzip, deflate, br",
+    //     "Connection":"keep-alive",
+    //   },
+    // );
+
     return await dio.post(
       '${Uri(path: urlPath)}',
       data: data,

@@ -1,8 +1,13 @@
 
+
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+
 class LandMarkModel {
   late int id;
   late String title;
-  late String founder;
+   String? founder;
   late String address;
   late String description;
   late String created;
@@ -13,7 +18,7 @@ class LandMarkModel {
       {
         required this.id,
       required this.title,
-      required this.founder,
+       this.founder,
       required this.address,
       required this.description,
       required this.created,
@@ -32,18 +37,6 @@ class LandMarkModel {
     landMark = LandMark.fromJson(json["landmark"]);
   }
 
-  Map<String, dynamic> toMaP() {
-    return {
-      "id":id,
-      "title":title,
-      "founder":founder,
-      "address":address,
-      "description":description,
-      "created":created,
-      "active":active,
-      "landmark":landMark.toMaP(),
-    };
-  }
 }
 
 class LandMark {
@@ -53,7 +46,7 @@ class LandMark {
   late double area;
   late int tourismCategoryObject;
   late int userCreatedBy;
-  late List<String> images;
+  late List<ImageModel> images;
   late List<String> reviews;
   LandMark(
       {
@@ -66,21 +59,71 @@ class LandMark {
     id = json["id"];
     name = json["name"];
     image = json["image"];
-    tourismCategoryObject = json["tourismCategoryObject"];
+    area = json["area"];
+    tourismCategoryObject = json["tourismCategoryObject"]??1;
     userCreatedBy = json["user_created_by"];
-    images = List.from(json["images"].map((e)=>e.toString()));
+    images = List.from(json["images"].map((e)=>ImageModel.fromJson(e)));
     reviews =List.from(json["reviews"].map((e)=>e.toString()));
   }
 
-  Map<String, dynamic> toMaP() {
+
+}
+
+class ImageModel{
+  late int id;
+  late String image;
+  late String created;
+  late int userObject;
+  late bool active;
+
+  ImageModel(this.id, this.userObject, this.image, this.created, this.active);
+
+  ImageModel.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    image = json["image"];
+    created = json["created"];
+    userObject = json["userObject"];
+    active = json["active"];
+  }
+}
+
+class LandMarkCreateModel {
+  late String name;
+  late String title;
+  late String address;
+  late String area;
+  late String govObject;
+  late String locationLink;
+  late String foundationDate;
+  late String founder;
+  late String description;
+  late String tourismCategoryObject;
+
+  LandMarkCreateModel(
+      {
+        required this.name,
+      required this.title,
+      required this.address,
+      required this.area,
+      required this.govObject,
+      required this.locationLink,
+      required this.foundationDate,
+      required this.founder,
+      required this.description,
+      required this.tourismCategoryObject});
+
+  Map<String, String> toMaP() {
     return {
-      "id":id,
       "name":name,
-      "image":image,
-      "tourismCategoryObject":tourismCategoryObject,
-      "user_created_by":userCreatedBy,
-      "images":images,
-      "reviews":reviews,
+      "title":title,
+      "address":address,
+      "area": area,
+      "govObject": govObject,
+      "location_link": locationLink,
+      "foundationDate": foundationDate,
+      "founder": founder,
+      "description": description,
+      "tourismCategoryObject": tourismCategoryObject,
     };
   }
 }

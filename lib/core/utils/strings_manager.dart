@@ -53,7 +53,7 @@ class AppStrings {
   static const String founder = "founder";
   static const String foundationData = "foundation_data";
   static const String description = "description";
-  static const String mustNotBeEmpty = "must_not_be_Empty";
+  static const String mustNotBeEmpty = "must_not_be_empty";
   static const String add = "add";
 
   // error handler

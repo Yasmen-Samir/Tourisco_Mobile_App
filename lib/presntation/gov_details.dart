@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toursim/core/componants/componants.dart';
 import 'package:toursim/models/category_model.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/landmark_model.dart';
@@ -35,6 +36,8 @@ class GovDetails extends StatelessWidget {
     },
 
   ];
+   TextEditingController searchController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,11 +110,28 @@ class GovDetails extends StatelessWidget {
                     const SizedBox(height: 30,),
                     InkWell(
                       onTap: (){
-                        Get.toNamed("/addPlace");
+                        Get.toNamed("/addPlace",arguments: govDetails.gov.id);
                       },
                         child: Image.asset("assets/images/add_place.png")),
                     const SizedBox(height: 30,),
+                    Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: myFromField(
+                        context: context,
+                        controller: searchController,
+                        keyboardType: TextInputType.text,
+                        onChange: (v){
+                          controller.search(v);
+                        },
+                        labelText: "Search",
+                        prefix: Icons.search,
+                      ),
+                    ),
+                    const SizedBox(height: 30,),
+                    if(searchController.text.isEmpty)
                     _listLandMarkCategories(controller.categories,controller.landmarks),
+                    if(searchController.text.isNotEmpty)
+                      _listLandMarkCategories(controller.categories,controller.landmarksSearch),
                   ],
                 ),
               ),
@@ -174,7 +194,7 @@ class GovDetails extends StatelessWidget {
     crossAxisCount:landMarks.length==1?1: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
-    childAspectRatio:landMarks.length==1?2.4:1.2,
+    childAspectRatio:landMarks.length==1?2.5:1.1,
     physics: const ScrollPhysics(),
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 10),
@@ -208,11 +228,13 @@ class GovDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5,),
-            Text(landMarks[index].landMark.name.replaceAll("_", " "),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),),
+            Expanded(
+              child: Text(landMarks[index].landMark.name.replaceAll("_", " "),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),),
+            ),
           ],
         ),
 

@@ -22,6 +22,7 @@ class SplashView extends StatelessWidget {
 
   _goNext() async {
     myId=await CacheHelper.getData(key: "myId",);
+    myAccess=await CacheHelper.getData(key: "myAccess",);
     print("======$myId==========");
     if(myId!=null){
       Get.offNamed("/homeView");

@@ -60,6 +60,7 @@ Color chooseToastColor(ToastState state) {
 
   return color;
 }
+
 Widget condition({
   required bool condition,
   required Widget child,

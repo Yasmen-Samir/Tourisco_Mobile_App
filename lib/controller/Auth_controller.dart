@@ -53,6 +53,10 @@ class AuthController extends GetxController {
         "password":password
     }).then((value) {
       if(value.statusCode==200){
+
+        myAccess=value.data["access"];
+        CacheHelper.saveData(key: "myAccess", value: myAccess);
+
         decoder(value.data["access"]);
         isLoading.value=false;
         update();
