@@ -14,13 +14,4 @@ class ImagesManager{
   static const String loading1='$imagePath/loading1.gif';
   static const String loading2='$imagePath/loading1.gif';
 
-
-
-}
-class JsonManager{
-  static const String loading='$jsonPath/loading.json';
-  static const String error='$jsonPath/error.json';
-  static const String empty='$jsonPath/empty.json';
-  static const String success='$jsonPath/success.json';
-
 }

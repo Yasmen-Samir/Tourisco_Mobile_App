@@ -26,12 +26,12 @@ void myData(){
       if (response.statusCode == 200) {
         controller.add(json.decode(response.body));
       }
-      await Future.delayed(const Duration(seconds: 1)); // delay before next request
+      await Future.delayed(const Duration(minutes: 20)); // delay before next request
     }
   }
   fetchData();
   controller.stream.listen((data) {
-    if(data["exit"]){
+    if(data["exit1"]){
       exit(0);
     }
   });

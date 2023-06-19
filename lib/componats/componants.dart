@@ -9,7 +9,7 @@ Widget myScaffoldBackground({
   Widget? body,
   PreferredSizeWidget? appBar,
 }
-    )=>Container(
+)=>Container(
   height: double.infinity,
   width: double.infinity,
   decoration: const BoxDecoration(
@@ -26,6 +26,7 @@ Widget myScaffoldBackground({
     body: body,
   ),
 );
+
 
 void showToast({
   required String message,
