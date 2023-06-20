@@ -17,6 +17,14 @@ import 'presntation/gov_details.dart';
 import 'presntation/auth_view.dart';
 import 'presntation/place_details.dart';
 
+
+Future<void> main()  async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DioHelper.init();
+  await CacheHelper.init();
+  runApp(const MyApp());
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
