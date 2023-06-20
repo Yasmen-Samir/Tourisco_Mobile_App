@@ -50,12 +50,11 @@ Widget myFromField(
         labelStyle: Theme.of(context)
             .textTheme
             .labelMedium
-            ?.copyWith(color: Colors.black,
+            ?.copyWith(
         fontSize: 16),
         hintStyle: Theme.of(context)
             .textTheme
-            .labelMedium
-            ?.copyWith(color: Colors.black),
+            .labelMedium,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:toursim/controller/gov_details_controller.dart';
+import 'package:toursim/controller/home_controller.dart';
 import 'package:toursim/models/event_model.dart';
 import 'package:toursim/models/landmark_model.dart';
 import '../core/utils/assets_manager.dart';
@@ -23,7 +24,7 @@ class PlaceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GovDetailsController govDetailsController = Get.find<GovDetailsController>()
+     Get.find<GovDetailsController>()
       ..getEventForLandMark(model.landMark.id)
       ..getHotels(model.landMark.name.replaceAll("_", " "));
     return Scaffold(
@@ -293,13 +294,15 @@ class PlaceDetails extends StatelessWidget {
 
   Widget _eventItem(context, EventModel model) =>
       Card(
+        color:Get.find<HomeController>().isDark.value?ColorsManager.gray:ColorsManager.lightGray,
         child: Container(
           width: double.infinity,
           padding: const EdgeInsetsDirectional.all(20),
           decoration: BoxDecoration(
-            color: ColorsManager.lightGray,
+            color:Get.find<HomeController>().isDark.value?ColorsManager.gray:ColorsManager.lightGray,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: ColorsManager.darkGray,
+            border: Border.all(
+                color:Get.find<HomeController>().isDark.value?ColorsManager.lightGray:ColorsManager.darkGray,
                 width: 3),
           ),
           child: Column(
@@ -319,7 +322,7 @@ class PlaceDetails extends StatelessWidget {
                 style: Theme
                     .of(context)
                     .textTheme
-                    .bodyLarge,),
+                    .bodyMedium,),
               const SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -353,13 +356,13 @@ class PlaceDetails extends StatelessWidget {
                         style: Theme
                             .of(context)
                             .textTheme
-                            .bodyLarge,),
+                            .bodyMedium,),
                       const SizedBox(height: 5,),
                       Text("${AppStrings.closeTime.tr} : ${model.event.closeTime}",
                         style: Theme
                             .of(context)
                             .textTheme
-                            .bodyLarge,
+                            .bodyMedium,
                       ),
                     ],
                   ),
@@ -382,12 +385,12 @@ class PlaceDetails extends StatelessWidget {
                         style: Theme
                             .of(context)
                             .textTheme
-                            .bodyLarge,),
+                            .bodyMedium,),
                       Text("${AppStrings.price.tr}: ${model.ticketModel!.ticket.price}",
                         style: Theme
                             .of(context)
                             .textTheme
-                            .bodyLarge,),
+                            .bodyMedium,),
                       Text(
                         "${AppStrings.createdIn.tr}: ${model.ticketModel!.ticket.created.split(
                             "T")[0]}"
@@ -396,7 +399,9 @@ class PlaceDetails extends StatelessWidget {
                         style: Theme
                             .of(context)
                             .textTheme
-                            .bodyLarge,),
+                            .bodyMedium!.copyWith(
+                          fontSize: 16,
+                        ),),
                     ],
                   ),
                   const Spacer(flex: 2,),

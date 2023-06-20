@@ -41,7 +41,7 @@ class AddPlace extends StatelessWidget {
                 margin: const EdgeInsetsDirectional.all(10),
                 padding: const EdgeInsetsDirectional.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: Get.isDarkMode?ColorsManager.darkGray:ColorsManager.lightGray,
                   border: Border.all(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -53,7 +53,7 @@ class AddPlace extends StatelessWidget {
                       myFromField(
                           context: context,
                           controller: _name,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.name.tr,
                           prefix: Icons.drive_file_rename_outline,
                           validator: (v) {
@@ -69,7 +69,7 @@ class AddPlace extends StatelessWidget {
                       myFromField(
                           context: context,
                           controller: _address,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.address.tr,
                           prefix: Icons.location_on_outlined,
                           validator: (v) {
@@ -85,7 +85,7 @@ class AddPlace extends StatelessWidget {
                           context: context,
                           controller: _area,
                           keyboardType: TextInputType.number,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.area.tr,
                           prefix: Icons.area_chart_outlined,
                           validator: (v) {
@@ -100,7 +100,7 @@ class AddPlace extends StatelessWidget {
                       myFromField(
                           context: context,
                           controller: _location,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.location.tr,
                           prefix: Icons.location_on_outlined,
                           validator: (v) {
@@ -116,13 +116,16 @@ class AddPlace extends StatelessWidget {
                         width: double.infinity,
                         alignment: AlignmentDirectional.center,
                         decoration: BoxDecoration(
-                            color: ColorsManager.white,
-                            borderRadius: BorderRadius.circular(20)
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.white,)
                         ),
                         child: DropdownButton(
                             borderRadius: BorderRadius.circular(20),
                             underline: const SizedBox(),
-                            hint: Text(AppStrings.tourismCategory.tr),
+                            dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+                            hint: Text(AppStrings.tourismCategory.tr,
+                            style: Theme.of(context).textTheme.bodyMedium,),
                             value: controller.selectedCategory,
                             items: List.generate(
                                 controller.categories.length,
@@ -131,8 +134,8 @@ class AddPlace extends StatelessWidget {
                                         value: controller.categories[index]
                                             .category.id,
                                         child: Text(controller
-                                            .categories[index].category.name
-                                            .replaceAll("_", " ")))),
+                                            .categories[index].title,
+                                        style: Theme.of(context).textTheme.bodyMedium,))),
                             onChanged: (v) {
                               controller.changeCategory(v);
                             }),
@@ -143,8 +146,11 @@ class AddPlace extends StatelessWidget {
                       Container(
                         width: double.infinity,
                         height: 120,
-                        decoration: const BoxDecoration(
-                          color: ColorsManager.white,
+                        decoration:  BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          border: Border.all(
+                            color: Theme.of(context).iconTheme.color!,
+                          )
                         ),
                         child: controller.image != null
                             ? Stack(
@@ -183,7 +189,7 @@ class AddPlace extends StatelessWidget {
                       myFromField(
                           context: context,
                           controller: _foundationDate,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.foundationData.tr,
                           prefix: Icons.foundation_outlined,
                           readOnly: true,
@@ -210,7 +216,7 @@ class AddPlace extends StatelessWidget {
                       myFromField(
                           context: context,
                           controller: _founder,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.founder.tr,
                           prefix: Icons.person_2_outlined,
                           validator: (v) {
@@ -227,7 +233,7 @@ class AddPlace extends StatelessWidget {
                           maxLines: 6,
                           minLines: 5,
                           controller: _description,
-                          fillColor: ColorsManager.white,
+                          fillColor: Theme.of(context).scaffoldBackgroundColor,
                           labelText: AppStrings.description.tr,
                           prefix: Icons.chat,
                           validator: (v) {

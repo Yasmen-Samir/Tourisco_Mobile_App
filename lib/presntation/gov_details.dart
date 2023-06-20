@@ -69,17 +69,12 @@ class GovDetails extends StatelessWidget {
                      Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(AppStrings.about.tr,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),),
+                        style:  Theme.of(context).textTheme.titleMedium,),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(govDetails.description,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                        ),),
+                        style:  Theme.of(context).textTheme.bodyMedium,),
                     ),
 
                     const SizedBox(height: 30,),
@@ -132,7 +127,7 @@ class GovDetails extends StatelessWidget {
         return  Column(
         children: [
           _buildTitle(categories[index].title.toString()),
-          _buildLandmarkWidget(landmarkFiltered),
+          _buildLandmarkWidget(context,landmarkFiltered),
         ],
       );
       }
@@ -165,7 +160,7 @@ class GovDetails extends StatelessWidget {
     ),
   );
 
-  Widget _buildLandmarkWidget(List<LandMarkModel>  landMarks) => GridView.count(
+  Widget _buildLandmarkWidget(BuildContext context,List<LandMarkModel>  landMarks) => GridView.count(
     crossAxisCount:landMarks.length==1?1: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
@@ -205,10 +200,8 @@ class GovDetails extends StatelessWidget {
             const SizedBox(height: 5,),
             Expanded(
               child: Text(landMarks[index].landMark.name.replaceAll("_", " "),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                ),),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           ],
         ),

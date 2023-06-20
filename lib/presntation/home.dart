@@ -1,11 +1,10 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toursim/controller/home_controller.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
-import 'package:toursim/models/gov.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/network/remote/api_url.dart';
 import 'package:toursim/presntation/drawer.dart';
@@ -36,20 +35,20 @@ class HomeView extends GetWidget<HomeController> {
             ),
           ),
           drawer:const DrawerNav() ,
-            body: controller.govs.isNotEmpty?_getContentWidget(controller)
+            body: controller.govs.isNotEmpty?_getContentWidget(context,controller)
                 :const Center(child: CircularProgressIndicator()),
         );
       },
     );
   }
 
-  Widget _getContentWidget(HomeController controller) => SingleChildScrollView(
+  Widget _getContentWidget(BuildContext context,HomeController controller) => SingleChildScrollView(
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 25,),
             _getBannersWidget(controller.govs),
-            _getStoresWidget(controller.govs),
+            _getStoresWidget(context,controller.govs),
           ],
         ),
       );
@@ -104,7 +103,7 @@ class HomeView extends GetWidget<HomeController> {
   }
 
 
-  Widget _getStoresWidget(List<GovDetailsModel>  goves) => GridView.count(
+  Widget _getStoresWidget(BuildContext context,List<GovDetailsModel>  goves) => GridView.count(
     crossAxisCount: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
@@ -144,9 +143,7 @@ class HomeView extends GetWidget<HomeController> {
             ),
             const SizedBox(height: 5,),
             Text(goves[index].title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
+              style:  Theme.of(context).textTheme.titleMedium,),
           ],
         ),
 
