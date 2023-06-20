@@ -84,6 +84,7 @@ class ImageModel{
     active = json["active"];
   }
 }
+
 class Review {
   late int id;
   late List<ImageModel> images;
@@ -136,8 +137,6 @@ class UserInReview {
     profileImage = json["profile_image"];
   }
 }
-
-
 
 class LandMarkCreateModel {
   late String name;

@@ -10,7 +10,6 @@ import 'package:toursim/models/event_model.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/hotel_model.dart';
 import 'package:toursim/models/landmark_model.dart';
-import 'package:toursim/models/place_model.dart';
 import 'package:toursim/models/ticket_model.dart';
 import 'package:dio/dio.dart' as dioo;
 
@@ -117,6 +116,8 @@ class GovDetailsController extends GetxController {
     };
     loadingCreate=true;
     update();
+    DioHelper.postData(urlPath: ApiUrl.landmarksWithBase, data: model.toMaP());
+
     var dio = Dio();
     var formData = dioo.FormData.fromMap(model.toMaP());
     formData.files.add(
@@ -145,8 +146,9 @@ class GovDetailsController extends GetxController {
      update();
 
   }
-  List<HotelModel> hotels=[];
 
+
+  List<HotelModel> hotels=[];
   Future<void> getHotels(String city) async {
     hotels=[];
     print("=================$city===========================");

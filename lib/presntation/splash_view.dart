@@ -36,13 +36,13 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _startDelay();
-    return   Scaffold(
+    return   const Scaffold(
       backgroundColor: ColorsManager.primary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             Image(image:AssetImage(ImagesManager.logo2) ,
             ),
             Image(

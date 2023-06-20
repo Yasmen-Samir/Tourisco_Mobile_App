@@ -88,66 +88,10 @@ class PlaceDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 60,
-            ),
-            const Text(
-              "TICKET PRICE",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 20,
-              ),
-            ),
-            Divider(
-              color: Colors.blue,
-              height: 30,
-              indent: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .32,
-              endIndent: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .32,
-              thickness: 2,
-            ),
-            Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: Image.asset(
-                  ImagesManager.ticket1,
-                )),
-            const SizedBox(height: 20,),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                'Foreigner:\n'
-                    'Adults: 200 EGP / Students: 100 EGP\n'
-                    '\n'
-                    'Commemorative photography without \n'
-                    'flash: 50 EGP\n'
-                    '\n'
-                    'Filming memorial video: 300 EGP\n'
-                    '\n'
-                    'Egyptian/Arabic tour guide:\n'
-                    '  Adults: 30 EGP / Students: 10 EGP\n'
-                    '\n'
-                    'Commemorative photography without \n'
-                    'flash: 20 EGP\n'
-                    '\n'
-                    'Filming memorial video: 300 EGP\n'
-                    '\n'
-                    'Audio guide: 30 EGP\n'
-                    'Free entry for children up to 6 years old',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(
               height: 50,
             ),
             const Text(
-              "WORKING HOURS",
+              "Events",
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
@@ -165,39 +109,6 @@ class PlaceDetails extends StatelessWidget {
                   .size
                   .width * .32,
               thickness: 2,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 100,
-                width: double.infinity,
-                padding: const EdgeInsetsDirectional.all(5),
-                decoration: BoxDecoration(
-                  color: ColorsManager.lightGray,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: ColorsManager.darkGray,
-                      width: 3),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("09:00 AM - 05:00 PM",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18.0,
-                      ),),
-                    Text("Sunday - \nFriday",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18.0,
-                      ),),
-
-                  ],
-                ),
-              ),
             ),
             const SizedBox(
               height: 40,
@@ -422,7 +333,7 @@ class PlaceDetails extends StatelessWidget {
                       color: Colors.red,
                       size: 35,),
                   const Spacer(flex: 1),
-                  Text(model.active ? "Active" : "Not Active Now",
+                  Text(model.active ? AppStrings.active.tr : AppStrings.notActive.tr,
                     style: Theme
                         .of(context)
                         .textTheme
@@ -464,20 +375,21 @@ class PlaceDetails extends StatelessWidget {
                     width: 80,
                   ),
                   const Spacer(flex: 1,),
+                  if(model.ticketModel!=null)
                   Column(
                     children: [
-                      Text("Name:${model.ticketModel!.ticket.name}",
+                      Text("${AppStrings.name.tr}:${model.ticketModel!.ticket.name}",
                         style: Theme
                             .of(context)
                             .textTheme
                             .bodyLarge,),
-                      Text("price: ${model.ticketModel!.ticket.price}",
+                      Text("${AppStrings.price.tr}: ${model.ticketModel!.ticket.price}",
                         style: Theme
                             .of(context)
                             .textTheme
                             .bodyLarge,),
                       Text(
-                        "Created in: ${model.ticketModel!.ticket.created.split(
+                        "${AppStrings.createdIn.tr}: ${model.ticketModel!.ticket.created.split(
                             "T")[0]}"
                             "  ${model.ticketModel!.ticket.created.split("T")[1]
                             .substring(0, 5)}",

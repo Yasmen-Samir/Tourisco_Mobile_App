@@ -18,24 +18,6 @@ class GovDetails extends StatelessWidget {
   GovDetails({ Key? key}) : super(key: key);
 
 
-  List<Map<String,dynamic>> banner = [
-    {
-      "name":"Egyptian Musium",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-    {
-      "name":"Egyptian Musium",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-
-  ];
-  List<Map<String,dynamic>> single = [
-    {
-      "name":"Helwan Eye",
-      "image":"https://ychef.files.bbci.co.uk/976x549/p07zy3y6.jpg",
-    },
-
-  ];
    TextEditingController searchController = TextEditingController();
 
 
@@ -99,14 +81,7 @@ class GovDetails extends StatelessWidget {
                           fontSize: 16.0,
                         ),),
                     ),
-                   /* _buildTitle("CULTURAL TOURISM"),
-                    _buildLandmarkWidget(controller.landmarks),
-                    _buildTitle("ENTERTAINMENT TOURISM"),
-                    _buildLandmarkWidget(controller.landmarks),
-                    _buildTitle("MEDICAL TOURISM"),
-                    _buildLandmarkWidget(controller.landmarks),
-                    _buildTitle("ECO TOURISM"),
-                    _buildLandmarkWidget(controller.landmarks),*/
+
                     const SizedBox(height: 30,),
                     InkWell(
                       onTap: (){
@@ -156,7 +131,7 @@ class GovDetails extends StatelessWidget {
       if(landmarkFiltered.isNotEmpty) {
         return  Column(
         children: [
-          _buildTitle(categories[index].category.name.toString().replaceAll("_", " ")),
+          _buildTitle(categories[index].title.toString()),
           _buildLandmarkWidget(landmarkFiltered),
         ],
       );

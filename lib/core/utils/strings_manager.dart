@@ -59,6 +59,10 @@ class AppStrings {
   static const String description = "description";
   static const String mustNotBeEmpty = "must_not_be_empty";
   static const String add = "add";
+  static const String createdIn = "created_in";
+  static const String price = "price";
+  static const String active = "active";
+  static const String notActive = "not_active";
 
   // error handler
   static const String badRequestError = "bad_request_error";

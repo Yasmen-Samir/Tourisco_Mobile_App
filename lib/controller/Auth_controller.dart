@@ -47,7 +47,8 @@ class AuthController extends GetxController {
   required String password,
 }) {
     isLoading.value=true;
-    DioHelper.postData(urlPath: ApiUrl.loginUser,
+    DioHelper.postData(
+        urlPath: ApiUrl.loginUser,
         data:{
         "email":email,
         "password":password
@@ -114,12 +115,8 @@ class AuthController extends GetxController {
   }
 
   Rx<bool> isMale = true.obs;
-
   void changeGender(bool isMale) {
     this.isMale.value = isMale;
   }
-  @override
-  void onClose() {
-    super.onClose();
-  }
+
 }

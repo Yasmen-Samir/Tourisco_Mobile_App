@@ -1,16 +1,17 @@
 
-import 'package:toursim/models/ticket_model.dart';
 
 
 class CategoryModel {
   late int id;
   late Category category;
+  late String title;
   late String description;
 
   CategoryModel(
       {
         required this.id,
       required this.category,
+      required this.title,
       required this.description,
       }
       );
@@ -18,6 +19,7 @@ class CategoryModel {
     id = json["id"];
     category = Category.fromJson(json["category"]);
     description = json["description"];
+    title = json["title"];
   }
 
   Map<String, dynamic> toMaP() {
@@ -25,6 +27,7 @@ class CategoryModel {
       "id":id,
       "category":category.toMaP(),
       "description":description,
+      "title":title,
     };
   }
 }

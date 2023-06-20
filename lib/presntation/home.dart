@@ -104,7 +104,7 @@ class HomeView extends GetWidget<HomeController> {
   }
 
 
-  Widget _getStoresWidget(List<GovDetailsModel>  stores) => GridView.count(
+  Widget _getStoresWidget(List<GovDetailsModel>  goves) => GridView.count(
     crossAxisCount: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
@@ -112,10 +112,10 @@ class HomeView extends GetWidget<HomeController> {
     physics: const ScrollPhysics(),
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 10),
-    children: List.generate(stores.length, (index) {
+    children: List.generate(goves.length, (index) {
       return InkWell(
         onTap: () {
-          Get.toNamed("/govDetails",arguments: stores[index]);
+          Get.toNamed("/govDetails",arguments: goves[index]);
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -136,14 +136,14 @@ class HomeView extends GetWidget<HomeController> {
                   placeholder: (context, url) => Image.asset(
                     ImagesManager.loading1,
                   ),
-                  imageUrl: "${ApiUrl.baseLink}${stores[index].gov.emblem}",
+                  imageUrl: "${ApiUrl.baseLink}${goves[index].gov.emblem}",
                   fit: BoxFit.cover,
                   height: 110,
                 ),
               ),
             ),
             const SizedBox(height: 5,),
-            Text(stores[index].title,
+            Text(goves[index].title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),),
