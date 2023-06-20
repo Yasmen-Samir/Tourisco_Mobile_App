@@ -16,4 +16,29 @@ import 'core/language/translate.dart';
 import 'presntation/gov_details.dart';
 import 'presntation/auth_view.dart';
 import 'presntation/place_details.dart';
-//private code here
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: Get.isDarkMode?ThemeMode.dark:ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      translations: Translation(),
+      locale: const Locale("en"),
+      fallbackLocale: const Locale("en"),
+      getPages: [
+        GetPage(name: "/",page: () => const SplashView(),),
+        GetPage(name: "/homeView",page: () =>  HomeView(),),
+        GetPage(name: "/authView",page: () =>  AuthView(),),
+        GetPage(name: "/forgetPassword",page: () =>  ForgetPassword(),),
+        GetPage(name: "/govDetails",page: () =>  GovDetails()),
+        GetPage(name: "/placeDetails",page: () =>  PlaceDetails(),),
+        GetPage(name: "/addPlace",page: () =>   AddPlace(),),
+      ],
+    );
+  }
+}
+
