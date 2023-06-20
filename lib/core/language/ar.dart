@@ -52,4 +52,10 @@ const Map<String,String> ar={
   "description": "الوصف",
   "must_not_be_empty": "يجب ألا يكون فارغًا",
   "add": "إضافة",
+  "created_in": "تم الإنشاء في",
+  "price": "السعر",
+  "active": "نشط",
+  "not_active": "غير نشط",
+  "open_time": "وقت الافتتاح",
+  "close_time": "وقت الإغلاق",
 };

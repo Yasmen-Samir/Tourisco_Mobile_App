@@ -309,7 +309,7 @@ class PlaceDetails extends StatelessWidget {
                   .textTheme
                   .titleLarge,),
               const SizedBox(height: 10,),
-              Text("Created in", style: Theme
+              Text(AppStrings.createdIn.tr, style: Theme
                   .of(context)
                   .textTheme
                   .titleMedium,),
@@ -349,13 +349,13 @@ class PlaceDetails extends StatelessWidget {
                   const Spacer(flex: 1),
                   Column(
                     children: [
-                      Text("Open Time : ${model.event.openTime}",
+                      Text("${AppStrings.openTime.tr} : ${model.event.openTime}",
                         style: Theme
                             .of(context)
                             .textTheme
                             .bodyLarge,),
                       const SizedBox(height: 5,),
-                      Text("Closed Time : ${model.event.closeTime}",
+                      Text("${AppStrings.closeTime.tr} : ${model.event.closeTime}",
                         style: Theme
                             .of(context)
                             .textTheme
@@ -402,7 +402,6 @@ class PlaceDetails extends StatelessWidget {
                   const Spacer(flex: 2,),
                 ],
               ),
-
             ],
           ),
         ),

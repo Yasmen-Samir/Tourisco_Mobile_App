@@ -63,6 +63,8 @@ class AppStrings {
   static const String price = "price";
   static const String active = "active";
   static const String notActive = "not_active";
+  static const String openTime = "open_time";
+  static const String closeTime = "close_time";
 
   // error handler
   static const String badRequestError = "bad_request_error";

@@ -52,4 +52,11 @@ const Map<String, String> en = {
   "description": "Description",
   "must_not_be_empty": "Must not be empty",
   "add": "Add",
+  "created_in":"Created In",
+  "price":"price",
+  "active":"Active",
+  "not_active":"Not Active",
+  "open_time":"Open Time",
+  "close_time":"Close Time",
+
 };
