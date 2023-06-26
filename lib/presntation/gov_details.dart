@@ -6,6 +6,7 @@ import 'package:toursim/models/category_model.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/landmark_model.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
+import 'package:toursim/presntation/place_details.dart';
 
 import '../controller/gov_details_controller.dart';
 import '../core/utils/assets_manager.dart';
@@ -98,10 +99,12 @@ class GovDetails extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30,),
+                    if(controller.landmarks.isEmpty)
+                      _empty(controller),
                     if(searchController.text.isEmpty)
-                    _listLandMarkCategories(controller.categories,controller.landmarks),
+                    _listLandMarkCategories(controller.categories,controller.landmarks,govDetails.gov.id),
                     if(searchController.text.isNotEmpty)
-                      _listLandMarkCategories(controller.categories,controller.landmarksSearch),
+                      _listLandMarkCategories(controller.categories,controller.landmarksSearch,govDetails.gov.id),
                   ],
                 ),
               ),
@@ -110,7 +113,16 @@ class GovDetails extends StatelessWidget {
     );
 
   }
-  Widget _listLandMarkCategories(List<CategoryModel> categories,List<LandMarkModel> landmarks){
+  Widget _empty(GovDetailsController controller){
+    controller.empty();
+    if(controller.noLandmark){
+      return const Text("NO Landmarks");
+    }
+    return   const SizedBox(
+        height: 300,
+        child: Center(child: CircularProgressIndicator()));
+  }
+  Widget _listLandMarkCategories(List<CategoryModel> categories,List<LandMarkModel> landmarks,int govId){
     List<LandMarkModel> landmarkFiltered=[];
     return ListView.separated(
       shrinkWrap: true,
@@ -127,7 +139,7 @@ class GovDetails extends StatelessWidget {
         return  Column(
         children: [
           _buildTitle(categories[index].title.toString()),
-          _buildLandmarkWidget(context,landmarkFiltered),
+          _buildLandmarkWidget(context,landmarkFiltered,govId),
         ],
       );
       }
@@ -160,7 +172,7 @@ class GovDetails extends StatelessWidget {
     ),
   );
 
-  Widget _buildLandmarkWidget(BuildContext context,List<LandMarkModel>  landMarks) => GridView.count(
+  Widget _buildLandmarkWidget(BuildContext context,List<LandMarkModel>  landMarks,int govId) => GridView.count(
     crossAxisCount:landMarks.length==1?1: 2,
     crossAxisSpacing: 1,
     mainAxisSpacing: 0,
@@ -171,7 +183,7 @@ class GovDetails extends StatelessWidget {
     children: List.generate(landMarks.length, (index) {
       return InkWell(
         onTap: () {
-          Get.toNamed("/placeDetails",arguments: landMarks[index]);
+          Get.to(PlaceDetails(model: landMarks[index],govId: govId,));
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,

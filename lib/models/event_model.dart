@@ -7,7 +7,7 @@ class EventModel {
   late String created;
   late bool active;
   late Event event;
-   TicketModel? ticketModel;
+   List<TicketModel>? tickets;
 
   EventModel(
       {
@@ -16,7 +16,7 @@ class EventModel {
       required this.created,
       required this.active,
       required this.event,
-       this.ticketModel,
+       this.tickets,
       }
       );
   EventModel.fromJson(Map<String, dynamic> json) {

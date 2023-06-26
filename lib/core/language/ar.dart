@@ -58,4 +58,6 @@ const Map<String,String> ar={
   "not_active": "غير نشط",
   "open_time": "وقت الافتتاح",
   "close_time": "وقت الإغلاق",
+  "tickets": "التذاكر",
+  "ticket_category": "فئة التذكرة",
 };

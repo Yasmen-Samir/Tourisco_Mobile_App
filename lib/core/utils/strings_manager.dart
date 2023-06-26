@@ -65,6 +65,8 @@ class AppStrings {
   static const String notActive = "not_active";
   static const String openTime = "open_time";
   static const String closeTime = "close_time";
+  static const String tickets = "tickets";
+  static const String ticketCategory = "ticket_category";
 
   // error handler
   static const String badRequestError = "bad_request_error";

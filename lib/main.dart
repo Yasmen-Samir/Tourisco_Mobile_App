@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/authView",page: () =>  AuthView(),),
         GetPage(name: "/forgetPassword",page: () =>  ForgetPassword(),),
         GetPage(name: "/govDetails",page: () =>  GovDetails()),
-        GetPage(name: "/placeDetails",page: () =>  PlaceDetails(),),
         GetPage(name: "/addPlace",page: () =>   AddPlace(),),
       ],
     );

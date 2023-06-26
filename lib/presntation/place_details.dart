@@ -2,8 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:toursim/componats/componants.dart';
+import 'package:toursim/controller/add_review.dart';
 import 'package:toursim/controller/gov_details_controller.dart';
 import 'package:toursim/controller/home_controller.dart';
+import 'package:toursim/core/componants/componants.dart';
+import 'package:toursim/core/componants/my_button.dart';
 import 'package:toursim/models/event_model.dart';
 import 'package:toursim/models/landmark_model.dart';
 import '../core/utils/assets_manager.dart';
@@ -12,8 +17,11 @@ import '../network/remote/api_url.dart';
 import '../core/utils/strings_manager.dart';
 
 class PlaceDetails extends StatelessWidget {
-  PlaceDetails({Key? key}) : super(key: key);
-  late LandMarkModel model = Get.arguments as LandMarkModel;
+  PlaceDetails({required this.model,
+    required this.govId,
+    Key? key}) : super(key: key);
+  late LandMarkModel model;
+  final int govId;
 
   List<Map<String, dynamic>> single = [
     {
@@ -24,7 +32,7 @@ class PlaceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     Get.find<GovDetailsController>()
+   Get.find<GovDetailsController>()
       ..getEventForLandMark(model.landMark.id)
       ..getHotels(model.landMark.name.replaceAll("_", " "));
     return Scaffold(
@@ -186,7 +194,15 @@ class PlaceDetails extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            _buildReviews(model.landMark.reviews),
+            GetBuilder<GovDetailsController>(
+              builder: (controller) {
+                return _buildReviews(controller.getLandmarkById(model).landMark.reviews);
+              }
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            _addReview(context,model.landMark.id),
             const SizedBox(
               height: 200,
             ),
@@ -196,7 +212,205 @@ class PlaceDetails extends StatelessWidget {
       ),
     );
   }
+  _fromImage(context, controller) {
+    showDialog(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            backgroundColor:
+            Theme
+                .of(context)
+                .scaffoldBackgroundColor
+                .withOpacity(.9),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(
+                color: Theme
+                    .of(context)
+                    .iconTheme
+                    .color!,
+              ),
+            ),
+            actionsOverflowAlignment: OverflowBarAlignment.center,
+            actionsPadding: const EdgeInsets.all(20.0),
+            elevation: 20.0,
+            title: Text(
+              'Choose Source :',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              OutlinedButton(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.photo,
+                      color: Theme
+                          .of(context)
+                          .iconTheme
+                          .color!,
+                    ),
+                    const SizedBox(
+                      width: 30.0,
+                    ),
+                    Text(
+                      "From Gallery",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyMedium,
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  controller.getImage(ImageSource.gallery).then((value) {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              OutlinedButton(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.camera_alt,
+                      color: Theme
+                          .of(context)
+                          .iconTheme
+                          .color!,
+                    ),
+                    const SizedBox(
+                      width: 30.0,
+                    ),
+                    Text(
+                      "From Camera",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyMedium,
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  controller.getImage(ImageSource.camera).then((value) {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          ),
+    );
+  }
 
+Widget _addReview(BuildContext context,int ladMarkId){
+    return GetBuilder<AddReviewController>(
+      init: AddReviewController(),
+        builder: (controller) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "add Ration: ${controller.rating}",
+                    style:Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  _star(1,controller),
+                  _star(2,controller),
+                  _star(3,controller),
+                  _star(4,controller),
+                  _star(5,controller),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Stack(
+                alignment: AlignmentDirectional.bottomEnd,
+                children: [
+                  myFromField(context: context, controller: _addReviewController,
+                    minLines: 4,
+                    maxLines: 5,
+                    labelText: "Add Review",
+                    fillColor: Colors.white,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _fromImage(context, controller);
+                    },
+                    icon: const Icon(
+                      Icons.image_outlined,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              ),
+              if(controller.image != null)
+                Container(
+                  width: double.infinity,
+                  height: 120,
+                  margin: const EdgeInsetsDirectional.all(8),
+                  decoration:  BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      border: Border.all(
+                        color: Theme.of(context).iconTheme.color!,
+                      )
+
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: AlignmentDirectional.topEnd,
+                    children: [
+                      Image.file(
+                        controller.image!,
+                        fit: BoxFit.cover,
+                      ),
+                      Align(
+                          alignment: AlignmentDirectional.topEnd,
+                          child: IconButton(
+                              onPressed: () {
+                                controller.removeImage();
+                              },
+                              icon: CircleAvatar(
+                                  backgroundColor: Colors.grey.shade400,
+                                  child: const Icon(Icons.clear)))),
+                    ],
+                  ),
+                ),
+              const SizedBox(
+                height: 30,
+              ),
+              condition(
+                condition: !controller.loadingCreate,
+                child: myElevatedButton(title: "add Review", onPressed: (){
+                controller.addReview(
+                  id: ladMarkId,
+                govId: govId,
+                comment: _addReviewController.text,);
+                _addReviewController.clear();
+                }),
+              ),
+            ],
+          ),
+        );
+      }
+    );
+}
+Widget _star(int num,controller)=>SizedBox(
+  height: 30,
+  width: 30,
+  child: IconButton(
+    padding: EdgeInsets.zero,
+    icon: const Icon(Icons.star_rate_rounded),
+    onPressed: () => controller.setRating(num),
+    color: controller.rating >= num ? Colors.yellow : null,
+  ),
+);
   Widget _buildHotels(context) =>
       GetBuilder<GovDetailsController>(
           builder: (controller) {
@@ -369,48 +583,72 @@ class PlaceDetails extends StatelessWidget {
                   const Spacer(flex: 2),
                 ],
               ),
-              const SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image.asset(
-                    ImagesManager.ticket1,
-                    width: 80,
-                  ),
-                  const Spacer(flex: 1,),
-                  if(model.ticketModel!=null)
-                  Column(
-                    children: [
-                      Text("${AppStrings.name.tr}:${model.ticketModel!.ticket.name}",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium,),
-                      Text("${AppStrings.price.tr}: ${model.ticketModel!.ticket.price}",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium,),
-                      Text(
-                        "${AppStrings.createdIn.tr}: ${model.ticketModel!.ticket.created.split(
-                            "T")[0]}"
-                            "  ${model.ticketModel!.ticket.created.split("T")[1]
-                            .substring(0, 5)}",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium!.copyWith(
-                          fontSize: 16,
-                        ),),
-                    ],
-                  ),
-                  const Spacer(flex: 2,),
-                ],
+              const SizedBox(height: 20,),
+              if(model.tickets!=null)
+                Row(
+                  children: [
+                    Image.asset(
+                      ImagesManager.ticket1,
+                      width: 80,
+                    ),
+                    const Spacer(),
+                    Text(AppStrings.tickets.tr,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .titleMedium,
               ),
+                    const Spacer(flex: 2,),
+                  ],
+                ),
+              if(model.tickets!=null)
+                for(int i=0;i<model.tickets!.length;i++)
+                  tickets( context , model, i),
+
+
             ],
           ),
         ),
       );
+
+  final TextEditingController _addReviewController=TextEditingController();
+
+Widget tickets(BuildContext context ,EventModel model,int i){
+  return  Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Column(
+      children: [
+        Text("${AppStrings.name.tr}:${model.tickets![i].ticket.name}",
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyMedium,),
+        Text("${AppStrings.ticketCategory.tr}:${model.tickets![i].ticketCategory}",
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyMedium,),
+        Text("${AppStrings.price.tr}: ${model.tickets![i].ticket.price}",
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyMedium,),
+        Text(
+          "${AppStrings.createdIn.tr}: ${model.tickets![i].ticket.created.split(
+              "T")[0]}"
+              "  ${model.tickets![i].ticket.created.split("T")[1]
+              .substring(0, 5)}",
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyMedium!.copyWith(
+            fontSize: 16,
+          ),),
+        const Divider(color: ColorsManager.primary,thickness: 3),
+      ],
+    ),
+  );
+}
 
   Widget _buildReviews(List<Review> reviews) =>
       ListView.builder(

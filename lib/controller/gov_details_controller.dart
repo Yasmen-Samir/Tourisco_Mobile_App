@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,13 @@ class GovDetailsController extends GetxController {
     });
   }
 
+  bool noLandmark=false;
+  void empty(){
+    Future.delayed(const Duration(seconds: 10)).then((value){
+     noLandmark=true;
+     update();
+    });
+  }
   List<LandMarkModel> landmarks = [];
   List<LandMarkModel> landmarksSearch = [];
 
@@ -40,6 +48,15 @@ class GovDetailsController extends GetxController {
       landmarks = List.from(value.data.map((e) => LandMarkModel.fromJson(e)));
       update();
     });
+  }
+
+  LandMarkModel getLandmarkById(LandMarkModel model){
+    for (var element in landmarks) {
+      if(element.landMark.id==model.landMark.id){
+        return element;
+      }
+    }
+    return model;
   }
   void search(String text) {
       landmarksSearch=[];
@@ -60,17 +77,24 @@ class GovDetailsController extends GetxController {
         .then((value) async {
       events = List.from(value.data.map((e) => EventModel.fromJson(e)));
       for (var element in events) {
-        element.ticketModel = await getTicketForEvent(element.id);
+        element.tickets = await getTicketForEvent(element.id);
       }
       update();
     });
   }
 
-  Future<TicketModel?> getTicketForEvent(int id) {
+  Future<List<TicketModel>?> getTicketForEvent(int id) async {
+    List<TicketModel>? tickets=[];
     return DioHelper.getData(urlPath: ApiUrl.getTicketForEvent(id))
         .then((value) {
-      return TicketModel.fromJson(value.data);
+      print("ttttttttttttttttttttttttttttttttttt");
+      print(value.data);
+          tickets =List.from(value.data.map((e)=>TicketModel.fromJson(e)));
+          print("ttttttttttttttttttttttttttttttttttt");
+          print(tickets);
+          return tickets;
     });
+    
   }
 
   List<CategoryModel> categories = [];
@@ -116,7 +140,6 @@ class GovDetailsController extends GetxController {
     };
     loadingCreate=true;
     update();
-    DioHelper.postData(urlPath: ApiUrl.landmarksWithBase, data: model.toMaP());
 
     var dio = Dio();
     var formData = dioo.FormData.fromMap(model.toMaP());
@@ -171,7 +194,6 @@ class GovDetailsController extends GetxController {
         }));
         print(hotels);
      }).catchError((error){
-       print("=================Error===========================");
        if(error is DioError){
          print(error.response);
          showToast(message: error.response.toString().replaceAll(",", "\n"), state: ToastState.error);
@@ -181,6 +203,8 @@ class GovDetailsController extends GetxController {
      update();
 
   }
+
+
 
 
 }

@@ -2,7 +2,8 @@
 class TicketModel {
   late int id;
   late Ticket ticket;
-
+  late String ticketCategory;
+  late String title;
   TicketModel({
         required this.id,
       required this.ticket,
@@ -10,12 +11,16 @@ class TicketModel {
 
   TicketModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
+    title = json["title"];
+    ticketCategory = json["ticket_class_category"];
     ticket = Ticket.fromJson(json["ticket"]);
   }
 
   Map<String, dynamic> toMaP() {
     return {
       "id":id,
+      "title":title,
+      "ticket_class_category":ticketCategory,
       "landmark":ticket.toMaP(),
     };
   }

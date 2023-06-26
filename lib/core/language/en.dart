@@ -58,5 +58,7 @@ const Map<String, String> en = {
   "not_active":"Not Active",
   "open_time":"Open Time",
   "close_time":"Close Time",
+  "tickets":"Tickets",
+  "ticket_category":"Ticket Category",
 
 };

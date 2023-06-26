@@ -72,7 +72,7 @@ Widget myFromField(
         )
             : null,
         enabledBorder:  OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1),
+            borderSide:  BorderSide(color: Theme.of(context).iconTheme.color!, width: 1),
             borderRadius: BorderRadius.circular(25),),
         disabledBorder:  OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.white, width: 1),

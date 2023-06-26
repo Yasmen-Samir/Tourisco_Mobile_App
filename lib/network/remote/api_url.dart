@@ -13,6 +13,8 @@ class ApiUrl{
   static  String govDetails(int id)=>"$language/governorates/$id";
   static  String getLandMarkForGov(int id)=>"$language/governorate_landmarks/$id/";
   static  String getEventForLandMark(int id)=>"$language/$id/landmark_events";
-  static  String getTicketForEvent(int id)=>"$language/tickets/$id/";
+  static  String getTicketForEvent(int id)=>"$language/$id/tickets/";
   static  String userData(int id)=>"users/$id";
+  static  String addReviewByIdWithBase(int id)=>'https://tourisco.onrender.com/api/landmark_reviews_with_images/$id/';
+
 }
