@@ -1,4 +1,4 @@
-const Map<String,String> ar={
+const Map<String, String> ar = {
   "logout": "تسجيل الخروج",
   "lang": "العربية",
   "home": "الرئيسية",
@@ -60,4 +60,10 @@ const Map<String,String> ar={
   "close_time": "وقت الإغلاق",
   "tickets": "التذاكر",
   "ticket_category": "فئة التذكرة",
+  "events": "الأحداث",
+  "gallery": "المعرض",
+  "hotels": "الفنادق",
+  "add_review": "إضافة تقييم",
+  "ratings_and_reviews": "التقييمات والمراجعات",
+  "add_rating": "إضافة تقييم",
 };

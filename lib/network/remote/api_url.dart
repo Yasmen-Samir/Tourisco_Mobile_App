@@ -1,4 +1,4 @@
-import 'package:toursim/helper/constants.dart';
+import 'package:toursim/helper/constant.dart';
 
 class ApiUrl{
   static const String baseLink="https://tourisco.onrender.com";

@@ -10,8 +10,7 @@ import 'package:toursim/core/componants/my_button.dart';
 import 'package:toursim/core/utils/color_manager.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
 import 'package:toursim/models/landmark_model.dart';
-import 'package:toursim/presntation/gov_details.dart';
-import 'package:toursim/presntation/home.dart';
+
 
 class AddPlace extends StatelessWidget {
   AddPlace({super.key});

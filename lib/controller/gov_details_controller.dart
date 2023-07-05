@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toursim/componats/componants.dart';
-import 'package:toursim/controller/constant.dart';
+import 'package:toursim/helper/constant.dart';
+import 'package:toursim/core/componants/componants.dart';
 import 'package:toursim/models/category_model.dart';
 import 'package:toursim/models/event_model.dart';
 import 'package:toursim/models/gov_details.dart';
@@ -46,6 +45,7 @@ class GovDetailsController extends GetxController {
     DioHelper.getData(urlPath: ApiUrl.getLandMarkForGov(id))
         .then((value) {
       landmarks = List.from(value.data.map((e) => LandMarkModel.fromJson(e)));
+      print(value.data);
       update();
     });
   }
@@ -87,11 +87,7 @@ class GovDetailsController extends GetxController {
     List<TicketModel>? tickets=[];
     return DioHelper.getData(urlPath: ApiUrl.getTicketForEvent(id))
         .then((value) {
-      print("ttttttttttttttttttttttttttttttttttt");
-      print(value.data);
           tickets =List.from(value.data.map((e)=>TicketModel.fromJson(e)));
-          print("ttttttttttttttttttttttttttttttttttt");
-          print(tickets);
           return tickets;
     });
     
@@ -174,7 +170,7 @@ class GovDetailsController extends GetxController {
   List<HotelModel> hotels=[];
   Future<void> getHotels(String city) async {
     hotels=[];
-    print("=================$city===========================");
+    print("=================$city=========hotel==================");
  var headers= {
       'X-RapidAPI-Key': 'e0e9dafe7bmsh71855364bd99b80p14a6c6jsn6c0e4be0f513',
     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
@@ -183,6 +179,7 @@ class GovDetailsController extends GetxController {
      await  dio.get(ApiUrl.hotels,
         queryParameters: {
           "locale": 'en-us',
+          "units": 'km',
           "name": city.toLowerCase(),
         },
         options: Options(headers: headers,),

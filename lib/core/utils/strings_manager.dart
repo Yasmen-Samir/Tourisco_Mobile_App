@@ -43,6 +43,12 @@ class AppStrings {
   static const String female = "female";
   static const String gender = "gender";
   static const String rating = "rating";
+  static const String events = "events";
+  static const String gallery = "gallery";
+  static const String hotels = "hotels";
+  static const String addReview = "add_review";
+  static const String ratingsAndReviews = "ratings_and_reviews";
+  static const String addRating = "add_rating";
 
 
 

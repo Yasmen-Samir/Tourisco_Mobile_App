@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:toursim/core/language/en.dart';
 import 'package:toursim/core/utils/app_theme.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
-import '../controller/constant.dart';
+import '../helper/constant.dart';
 import '../controller/home_controller.dart';
 import '../core/utils/color_manager.dart';
 import '../network/local/cache_helper.dart';

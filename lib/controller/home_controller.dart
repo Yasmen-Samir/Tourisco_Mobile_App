@@ -8,7 +8,7 @@ import 'package:toursim/network/local/cache_helper.dart';
 
 import '../network/remote/api_url.dart';
 import '../network/remote/dio_helper.dart';
-import 'constant.dart';
+import '../helper/constant.dart';
 
 class HomeController extends GetxController {
 

@@ -4,15 +4,10 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toursim/componats/componants.dart';
-import 'package:toursim/controller/constant.dart';
+import 'package:toursim/helper/constant.dart';
 import 'package:toursim/controller/gov_details_controller.dart';
-import 'package:toursim/models/category_model.dart';
-import 'package:toursim/models/event_model.dart';
-import 'package:toursim/models/gov_details.dart';
-import 'package:toursim/models/hotel_model.dart';
-import 'package:toursim/models/landmark_model.dart';
-import 'package:toursim/models/ticket_model.dart';
+import 'package:toursim/core/componants/componants.dart';
+
 import 'package:dio/dio.dart' as dioo;
 
 import '../network/remote/api_url.dart';

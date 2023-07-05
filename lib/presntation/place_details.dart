@@ -34,7 +34,7 @@ class PlaceDetails extends StatelessWidget {
   Widget build(BuildContext context) {
    Get.find<GovDetailsController>()
       ..getEventForLandMark(model.landMark.id)
-      ..getHotels(model.landMark.name.replaceAll("_", " "));
+      ..getHotels(model.title);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -46,7 +46,7 @@ class PlaceDetails extends StatelessWidget {
         ),
         backgroundColor: ColorsManager.darkYellow,
         title: Text(
-          model.landMark.name.replaceAll("_", " "),
+          model.title,
         ),
         centerTitle: true,
       ),
@@ -99,9 +99,9 @@ class PlaceDetails extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            const Text(
-              "Events",
-              style: TextStyle(
+             Text(
+              AppStrings.events.tr,
+              style: const TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
               ),
@@ -123,8 +123,8 @@ class PlaceDetails extends StatelessWidget {
               height: 40,
             ),
             _getEvents(),
-            const Text(
-              "GALLERY",
+             Text(
+              AppStrings.gallery.tr,
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
@@ -147,32 +147,13 @@ class PlaceDetails extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            const Text(
-              "Hotels",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 20,
-              ),
-            ),
-            Divider(
-              color: Colors.blue,
-              height: 30,
-              indent: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .4,
-              endIndent: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .4,
-              thickness: 2,
-            ),
+
             _buildHotels(context),
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              "Ratings and reviews",
+             Text(
+              AppStrings.ratingsAndReviews.tr,
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
@@ -204,7 +185,7 @@ class PlaceDetails extends StatelessWidget {
             ),
             _addReview(context,model.landMark.id),
             const SizedBox(
-              height: 200,
+              height: 20,
             ),
 
           ],
@@ -315,7 +296,11 @@ Widget _addReview(BuildContext context,int ladMarkId){
               Row(
                 children: [
                   Text(
-                    "add Ration: ${controller.rating}",
+                    AppStrings.addRating.tr,
+                    style:Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    ": ${controller.rating}",
                     style:Theme.of(context).textTheme.bodyMedium,
                   ),
                   _star(1,controller),
@@ -334,8 +319,8 @@ Widget _addReview(BuildContext context,int ladMarkId){
                   myFromField(context: context, controller: _addReviewController,
                     minLines: 4,
                     maxLines: 5,
-                    labelText: "Add Review",
-                    fillColor: Colors.white,
+                    labelText:   AppStrings.addReview.tr,
+                    fillColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   IconButton(
                     onPressed: () {
@@ -387,7 +372,7 @@ Widget _addReview(BuildContext context,int ladMarkId){
               ),
               condition(
                 condition: !controller.loadingCreate,
-                child: myElevatedButton(title: "add Review", onPressed: (){
+                child: myElevatedButton(title:AppStrings.addReview.tr, onPressed: (){
                 controller.addReview(
                   id: ladMarkId,
                 govId: govId,
@@ -414,54 +399,80 @@ Widget _star(int num,controller)=>SizedBox(
   Widget _buildHotels(context) =>
       GetBuilder<GovDetailsController>(
           builder: (controller) {
-            return GridView.count(
-              crossAxisCount: controller.hotels.length == 1 ? 1 : 2,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 0,
-              childAspectRatio: controller.hotels.length == 1 ? 2.1 : 1.0,
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-              children: List.generate(controller.hotels.length, (index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: const BorderSide(
-                          color: ColorsManager.primary,
-                          width: 3,
+            return Column(
+              children: [
+                if(controller.hotels.isNotEmpty)
+                Text(
+                  AppStrings.hotels.tr,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                  ),
+                ),
+                if(controller.hotels.isNotEmpty)
+                  Divider(
+                  color: Colors.blue,
+                  height: 30,
+                  indent: MediaQuery
+                      .of(context)
+                      .size
+                      .width * .4,
+                  endIndent: MediaQuery
+                      .of(context)
+                      .size
+                      .width * .4,
+                  thickness: 2,
+                ),
+                GridView.count(
+                  crossAxisCount: controller.hotels.length == 1 ? 1 : 2,
+                  crossAxisSpacing: 1,
+                  mainAxisSpacing: 0,
+                  childAspectRatio: controller.hotels.length == 1 ? 2.1 : 1.0,
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+                  children: List.generate(controller.hotels.length, (index) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: ColorsManager.primary,
+                              width: 3,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) =>
+                                  Image.asset(
+                                    ImagesManager.loading1,
+                                  ),
+                              imageUrl: controller.hotels[index].imageUrl,
+                              fit: BoxFit.cover,
+                              height: 110,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: CachedNetworkImage(
-                          placeholder: (context, url) =>
-                              Image.asset(
-                                ImagesManager.loading1,
-                              ),
-                          imageUrl: controller.hotels[index].imageUrl,
-                          fit: BoxFit.cover,
-                          height: 110,
+                        const SizedBox(height: 5,),
+                        Expanded(
+                          child: Text(controller.hotels[index].name,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Expanded(
-                      child: Text(controller.hotels[index].name,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                    ),
-                    Expanded(
-                      child: Text(controller.hotels[index].label,
-                        style: Theme.of(context).textTheme.bodyMedium),
-                    ),
-                  ],
-                );
-              }),
+                        Expanded(
+                          child: Text(controller.hotels[index].label,
+                            style: Theme.of(context).textTheme.bodyMedium),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ],
             );
           }
       );

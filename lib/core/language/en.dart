@@ -60,5 +60,10 @@ const Map<String, String> en = {
   "close_time":"Close Time",
   "tickets":"Tickets",
   "ticket_category":"Ticket Category",
-
+ "events":"Events",
+ "gallery":"Gallery",
+ "hotels":"Hotels",
+ "add_review":"Add Review",
+ "ratings_and_reviews":"Ratings And Reviews",
+ "add_rating":"Add Rating",
 };

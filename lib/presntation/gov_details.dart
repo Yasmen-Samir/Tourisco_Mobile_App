@@ -83,7 +83,12 @@ class GovDetails extends StatelessWidget {
                       onTap: (){
                         Get.toNamed("/addPlace",arguments: govDetails.gov.id);
                       },
-                        child: Image.asset("assets/images/add_place.png")),
+                        child: Column(
+                          children: [
+                            Image.asset("assets/images/add_place.png"),
+                            Text(AppStrings.addPlace.tr),
+                          ],
+                        )),
                     const SizedBox(height: 30,),
                     Padding(
                       padding: const EdgeInsets.all(1.0),
@@ -94,7 +99,7 @@ class GovDetails extends StatelessWidget {
                         onChange: (v){
                           controller.search(v);
                         },
-                        labelText: "Search",
+                        labelText: AppStrings.search.tr,
                         prefix: Icons.search,
                       ),
                     ),
@@ -111,8 +116,9 @@ class GovDetails extends StatelessWidget {
             );
       }
     );
-
   }
+
+
   Widget _empty(GovDetailsController controller){
     controller.empty();
     if(controller.noLandmark){
@@ -211,7 +217,7 @@ class GovDetails extends StatelessWidget {
             ),
             const SizedBox(height: 5,),
             Expanded(
-              child: Text(landMarks[index].landMark.name.replaceAll("_", " "),
+              child: Text(landMarks[index].title,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),

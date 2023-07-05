@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:toursim/controller/constant.dart';
+import 'package:toursim/helper/constant.dart';
 import 'package:toursim/network/local/cache_helper.dart';
 
 import '../core/utils/assets_manager.dart';

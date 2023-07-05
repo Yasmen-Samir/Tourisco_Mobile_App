@@ -6,7 +6,7 @@ import 'package:toursim/controller/Auth_controller.dart';
 import 'package:toursim/helper/constants.dart';
 import 'package:toursim/models/person.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
-import '../controller/constant.dart';
+import '../helper/constant.dart';
 import '../core/componants/componants.dart';
 import '../core/componants/my_button.dart';
 import '../core/utils/color_manager.dart';
