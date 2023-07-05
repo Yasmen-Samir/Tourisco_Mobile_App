@@ -1,7 +1,6 @@
 
 
 import 'package:get/get.dart';
-import 'package:toursim/helper/constants.dart';
 import 'package:toursim/models/gov_details.dart';
 import 'package:toursim/models/person.dart';
 import 'package:toursim/network/local/cache_helper.dart';

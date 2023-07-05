@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:toursim/componats/componants.dart';
 import '../core/componants/componants.dart';
 import '../core/componants/my_button.dart';
 import '../core/utils/strings_manager.dart';

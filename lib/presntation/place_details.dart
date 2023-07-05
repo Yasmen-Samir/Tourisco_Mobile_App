@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toursim/componats/componants.dart';
 import 'package:toursim/controller/add_review.dart';
 import 'package:toursim/controller/gov_details_controller.dart';
 import 'package:toursim/controller/home_controller.dart';

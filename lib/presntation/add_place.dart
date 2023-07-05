@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:toursim/componats/componants.dart';
 import 'package:toursim/controller/gov_details_controller.dart';
 import 'package:toursim/core/componants/componants.dart';
 import 'package:toursim/core/componants/my_button.dart';

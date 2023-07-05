@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:toursim/componats/componants.dart';
 import 'package:toursim/controller/Auth_controller.dart';
-import 'package:toursim/helper/constants.dart';
 import 'package:toursim/models/person.dart';
 import 'package:toursim/core/utils/strings_manager.dart';
 import '../helper/constant.dart';
