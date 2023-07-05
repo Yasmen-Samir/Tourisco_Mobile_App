@@ -49,6 +49,7 @@ class AppStrings {
   static const String addReview = "add_review";
   static const String ratingsAndReviews = "ratings_and_reviews";
   static const String addRating = "add_rating";
+  static const String noLandmarks = "no_landmarks";
 
 
 

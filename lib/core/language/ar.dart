@@ -66,4 +66,5 @@ const Map<String, String> ar = {
   "add_review": "إضافة تقييم",
   "ratings_and_reviews": "التقييمات والمراجعات",
   "add_rating": "إضافة تقييم",
+  "no_landmarks": "لا توجد معالم",
 };

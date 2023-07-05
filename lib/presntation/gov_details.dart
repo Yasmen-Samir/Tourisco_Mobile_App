@@ -83,11 +83,23 @@ class GovDetails extends StatelessWidget {
                       onTap: (){
                         Get.toNamed("/addPlace",arguments: govDetails.gov.id);
                       },
-                        child: Column(
-                          children: [
-                            Image.asset("assets/images/add_place.png"),
-                            Text(AppStrings.addPlace.tr),
-                          ],
+                        child: Container(
+                          height: 120,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).iconTheme.color!,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              const Icon(Icons.location_on_outlined,
+                                size: 80,
+                              ),
+                              Text(AppStrings.addPlace.tr,
+                              style: Theme.of(context).textTheme.bodyMedium,),
+                            ],
+                          ),
                         )),
                     const SizedBox(height: 30,),
                     Padding(
@@ -122,7 +134,7 @@ class GovDetails extends StatelessWidget {
   Widget _empty(GovDetailsController controller){
     controller.empty();
     if(controller.noLandmark){
-      return const Text("NO Landmarks");
+      return  Text(AppStrings.noLandmarks.tr);
     }
     return   const SizedBox(
         height: 300,

@@ -66,4 +66,5 @@ const Map<String, String> en = {
  "add_review":"Add Review",
  "ratings_and_reviews":"Ratings And Reviews",
  "add_rating":"Add Rating",
+ "no_landmarks":"No Landmarks",
 };
