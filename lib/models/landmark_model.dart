@@ -57,7 +57,7 @@ class LandMark {
     id = json["id"];
     name = json["name"];
     image = json["image"];
-    area = json["area"];
+    area = json["area"]??0.0;
     tourismCategoryObject = json["tourismCategoryObject"]??1;
     userCreatedBy = json["user_created_by"];
     images = List.from(json["images"].map((e)=>ImageModel.fromJson(e)));

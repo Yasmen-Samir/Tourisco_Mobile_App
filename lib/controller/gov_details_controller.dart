@@ -32,7 +32,7 @@ class GovDetailsController extends GetxController {
 
   bool noLandmark=false;
   void empty(){
-    Future.delayed(const Duration(seconds: 10)).then((value){
+    Future.delayed(const Duration(seconds: 30)).then((value){
      noLandmark=true;
      update();
     });
@@ -179,7 +179,6 @@ class GovDetailsController extends GetxController {
      await  dio.get(ApiUrl.hotels,
         queryParameters: {
           "locale": 'en-us',
-          "units": 'km',
           "name": city.toLowerCase(),
         },
         options: Options(headers: headers,),
@@ -192,7 +191,7 @@ class GovDetailsController extends GetxController {
         print(hotels);
      }).catchError((error){
        if(error is DioError){
-         print(error.response);
+         print("================${error.response}===========================");
          showToast(message: error.response.toString().replaceAll(",", "\n"), state: ToastState.error);
         }
        });
